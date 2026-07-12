@@ -207,29 +207,25 @@ private void startdisplay() {
       if(Build.VERSION.SDK_INT >= 30) {
              setOnApplyWindowInsetsListener(curve,(v, windowInsets) -> {
              setsizes(this);
-             if(screenwidth>= screenheight) {
-                 Insets  insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-                 {if(doLog) {Log.i(LOG_ID, "systemBars: left="+insets.left+ " right="+insets.right+ " bottom="+insets.bottom+ " top="+insets.top);};};
-                 Natives.systembar(insets.left, insets.top, insets.right, insets.bottom);
+             Insets  insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+             {if(doLog) {Log.i(LOG_ID, "systemBars: left="+insets.left+ " right="+insets.right+ " bottom="+insets.bottom+ " top="+insets.top);};};
+             Natives.systembar(insets.left, insets.top, insets.right, insets.bottom);
 
-                systembarLeft=insets.left;
-                systembarTop=insets.top;
-                systembarRight=insets.right;
-                systembarBottom=insets.bottom;
-                if(rtl) {
-                    systembarStart=systembarRight;
-                    systembarEnd=systembarLeft;
-                    }
-                else {
-                    systembarStart=systembarLeft;
-                    systembarEnd=systembarRight;
-                    }
-                 requestRender();
-                 onceshowintro();
-
-
+             systembarLeft=insets.left;
+             systembarTop=insets.top;
+             systembarRight=insets.right;
+             systembarBottom=insets.bottom;
+             if(rtl) {
+                 systembarStart=systembarRight;
+                 systembarEnd=systembarLeft;
                  }
-                return windowInsets;
+             else {
+                 systembarStart=systembarLeft;
+                 systembarEnd=systembarRight;
+                 }
+             requestRender();
+             onceshowintro();
+             return windowInsets;
           });
           }
     else {
@@ -238,17 +234,21 @@ private void startdisplay() {
       lightBars(!getInvertColors( ));
       }
     setContentView(curve);
-   try {
-      setRequestedOrientation(Natives.getScreenOrientation( ));
-       }
-   catch(       Throwable  error) {
-      String mess=error!=null?error.getMessage():null;
-      if(mess==null) {
-         mess="error";
-         }
-          Log.stack(LOG_ID ,mess,error);
-      }
-    getlibrary.getlibrary(this);//after setfilesdir for settings
+    getlibrary.getlibrary(this);//after setfilesdir for settings — must come BEFORE setRequestedOrientation
+    // Apply the stored orientation only when it differs from the current one.
+    // Calling setRequestedOrientation with the value already active is a no-op
+    // on most devices, but some (emulators) recreate the Activity even then.
+    // Comparing first avoids any unnecessary change.
+    // NOTE: must be called AFTER getlibrary so the initVersion migration has
+    // already run and orientation has the correct post-migration value.
+    try {
+        int stored = Natives.getScreenOrientation();
+        android.util.Log.e("ORIENT_DEBUG","startdisplay: stored="+stored+" getRequestedOrientation="+getRequestedOrientation());
+        if (getRequestedOrientation() != stored) {
+            android.util.Log.e("ORIENT_DEBUG","startdisplay: calling setRequestedOrientation("+stored+")");
+            setRequestedOrientation(stored);
+        }
+    } catch (Throwable ignored) {}
    if(!isWearable) {
       if(Build.VERSION.SDK_INT < 30) {
          onceshowintro();
@@ -1002,9 +1002,31 @@ void removeconfig() {
 @Override
 public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
+    android.util.Log.e("ORIENT_DEBUG","onConfigurationChanged orientation="+newConfig.orientation+" req="+getRequestedOrientation()+" menusOn="+Menus.on+" settingsOpen="+tk.glucodata.settings.Settings.isOpen());
     if(doLog) {Log.i(LOG_ID,"onConfigurationChanged height=" +newConfig.screenHeightDp+" width=" +newConfig.screenWidthDp + " sw="+newConfig.smallestScreenWidthDp);};
+    // Capture what is open BEFORE tearing anything down.
+    final boolean menuwasopen = Menus.on;
+    final boolean settingswasopen = tk.glucodata.settings.Settings.isOpen();
+    // Always drain the back-stack and remove overlay views on rotation,
+    // regardless of whether needsnatives() changed.  removeconfig() only
+    // calls doonback() when needsnatives() returns true (screen-size threshold
+    // crossed), which is rarely the case on a simple 90° rotation.  Without
+    // this, the old landscape/portrait overlay views remain attached to the
+    // window with stale geometry and any re-open attempt would try to add a
+    // second overlay on top of the existing one.
+    if(curve!=null) {
+        while(doonback())
+            ;
+        curve.removeviews();
+        }
     removeconfig();
-   updateRtl(newConfig);
+    updateRtl(newConfig);
+    if(menuwasopen&&curve!=null) {
+        curve.post(() -> Menus.show(this));
+        }
+    if(settingswasopen&&curve!=null) {
+        curve.post(() -> tk.glucodata.settings.Settings.set(this));
+        }
    }
 public void requestRender() {
     if(curve!=null)

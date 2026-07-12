@@ -415,7 +415,6 @@ void  mkitemlayout(MainActivity act,View parent) {
    if(isWearable) {
       if(useclose) {
          var scroll=new ScrollView(act);
-         scroll.setFillViewport(true);
          scroll.setSmoothScrollingEnabled(false);
          scroll.setScrollbarFadingEnabled(true);
          scroll.setVerticalScrollBarEnabled(true);

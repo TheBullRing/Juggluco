@@ -280,7 +280,6 @@ public   View addnumberview(MainActivity context,final int bron,final long time,
         if(true) {
            layout.setPaddingRelative((int)(width*0.01f),(int)(height*.15f),(int)(width*0.01f),(int)(height*.01f));
            ScrollView scroll=new ScrollView(context);
-           scroll.setFillViewport(true);
            scroll.setSmoothScrollingEnabled(false);
            scroll.setScrollbarFadingEnabled(true);
            scroll.setVerticalScrollBarEnabled(true);

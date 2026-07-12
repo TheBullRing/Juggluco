@@ -245,7 +245,6 @@ Sensors(MainActivity act,boolean givehelp,boolean select) {
        var layout=new Layout(act, (l, w, h) -> { final int[] ret={w,h}; return ret; }, views); 
        var scroll=new ScrollView(act);
        scroll.addView(layout);
-       scroll.setFillViewport(true);
        scroll.setSmoothScrollingEnabled(false);
        scroll.setScrollbarFadingEnabled(true);
        scroll.setVerticalScrollBarEnabled(Applic.scrollbar);

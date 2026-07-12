@@ -163,7 +163,6 @@ static private void  getselected(MainActivity context, View parent,String title,
         	layout.setBackgroundColor(Applic.backgroundcolor);
 		final var scroll=new ScrollView(context);
 		scroll.addView(layout);
-		scroll.setFillViewport(true);
 		scroll.setSmoothScrollingEnabled(false);
 		scroll.setVerticalScrollBarEnabled(Applic.scrollbar);
 		theview=scroll;

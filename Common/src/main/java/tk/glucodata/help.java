@@ -149,7 +149,6 @@ public static void setHtmlIgnoringHtmlColors(TextView textView, String html) {
          helpview.setLinksClickable(true);
        helpscroll.setVerticalScrollBarEnabled(Applic.scrollbar);
       helpscroll.setScrollbarFadingEnabled(true);
-        helpscroll.setFillViewport(true);
        
        Button ok=new Button(act);
        ViewGroup helplayout;
@@ -231,7 +230,6 @@ public static   void help(String text,ContextThemeWrapper act,Consumer<ViewGroup
          whelpview=new WeakReference<TextView>(helpview);
          helpview.setMovementMethod(LinkMovementMethod.getInstance());
 
-        helpscroll.setFillViewport(true);
      //helpview.setMovementMethod(null);
          helpview.setLinksClickable(true);
          helpscroll.setVerticalScrollBarEnabled(Applic.scrollbar);

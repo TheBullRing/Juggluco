@@ -21,8 +21,6 @@
 
 package tk.glucodata.settings;
 
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
 import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
 import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 import static android.content.pm.PackageManager.DONT_KILL_APP;
@@ -44,7 +42,6 @@ import static tk.glucodata.Log.doLog;
 import static tk.glucodata.Natives.getInvertColors;
 import static tk.glucodata.Natives.getRTL;
 import static tk.glucodata.Natives.getScheduleProfile;
-import static tk.glucodata.Natives.getalarmSoundType;
 import static tk.glucodata.Natives.getshowcalibratedstream;
 import static tk.glucodata.Natives.getshowhistories;
 import static tk.glucodata.Natives.getshownumbers;
@@ -60,10 +57,10 @@ import static tk.glucodata.util.getbutton;
 import static tk.glucodata.util.getcheckbox;
 import static tk.glucodata.util.getlabel;
 import static tk.glucodata.util.getlocale;
-import static tk.glucodata.util.getradiobuttonId;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import androidx.appcompat.app.AlertDialog;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
@@ -86,7 +83,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Space;
 import android.widget.Spinner;
@@ -105,7 +101,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import tk.glucodata.Applic;
 import tk.glucodata.Backup;
@@ -126,6 +124,11 @@ import tk.glucodata.MeterList;
 import tk.glucodata.Natives;
 import tk.glucodata.Notify;
 import tk.glucodata.NumAlarm;
+import tk.glucodata.AlarmLockScreenActivity;
+import tk.glucodata.AlarmSnooze;
+import tk.glucodata.LockScreenWallpaper;
+import tk.glucodata.PermanentGlucoseNotification;
+import tk.glucodata.RemoteGlucose;
 import tk.glucodata.R;
 import tk.glucodata.Specific;
 import tk.glucodata.SuperGattCallback;
@@ -135,6 +138,130 @@ import java.util.Locale;
 
 public class Settings  {
 private final static String LOG_ID="Settings";
+
+/** Update the cancel-snooze button label to show snooze status. */
+private static void updateSnoozeBtnLabel(android.widget.Button btn, android.content.Context ctx) {
+    if (AlarmSnooze.isActive()) {
+        btn.setText(ctx.getString(R.string.snooze_cancel) + " (" + AlarmSnooze.snoozeUntilText() + ")");
+        btn.setAlpha(1.0f);
+    } else {
+        btn.setText(R.string.snooze_cancel);
+        btn.setAlpha(0.4f);   // dimmed — no active snooze to cancel
+    }
+}
+
+/** Update the snooze-button picker label to show the current selection. */
+private static void updateSnoozeBtnPickerLabel(android.widget.Button btn, android.content.Context ctx) {
+    final List<Long> vals = AlarmSnooze.getSnoozeButtons();
+    if (vals.isEmpty()) {
+        btn.setText(ctx.getString(R.string.snooze_buttons_title) + ": —");
+    } else {
+        final StringBuilder sb = new StringBuilder(ctx.getString(R.string.snooze_buttons_title) + ": ");
+        for (int i = 0; i < vals.size(); i++) {
+            if (i > 0) sb.append(", ");
+            sb.append(vals.get(i));
+        }
+        btn.setText(sb.toString());
+    }
+}
+
+/**
+ * Show a multi-choice AlertDialog for picking snooze durations (30/60/90/120 min,
+ * up to 3 selected). On confirm, saves to AlarmSnooze and refreshes the button label.
+ */
+private static void showSnoozeBtnDialog(android.content.Context ctx, android.widget.Button pickerBtn) {
+    final long[] all = AlarmSnooze.ALL_DURATIONS;  // {30, 60, 90, 120}
+    final int[] labelIds = {R.string.snooze_30, R.string.snooze_60, R.string.snooze_90, R.string.snooze_120};
+    // getSnoozeButtonsRaw() may return the live SharedPreferences set — copy it defensively
+    final Set<String> current = new HashSet<>(AlarmSnooze.getSnoozeButtonsRaw());
+    final boolean[] checked = new boolean[all.length];
+    final String[] labels = new String[all.length];
+    for (int i = 0; i < all.length; i++) {
+        labels[i] = ctx.getString(labelIds[i]);
+        checked[i] = current.contains(String.valueOf(all[i]));
+    }
+    // working copy so Cancel discards changes
+    final boolean[] working = checked.clone();
+
+    // NOTE: setMessage and setMultiChoiceItems compete for the same content area —
+    // do NOT use both. Title alone is sufficient; the items are self-explanatory.
+    // Wrap context with light dialog theme so list text is dark on the white background.
+    final android.view.ContextThemeWrapper themedCtx =
+            new android.view.ContextThemeWrapper(ctx, R.style.MyLightAlertDialogTheme);
+    new AlertDialog.Builder(themedCtx)
+        .setTitle(R.string.snooze_buttons_title)
+        .setMultiChoiceItems(labels, working, (dialog, which, isChecked) -> {
+            if (isChecked) {
+                // Count how many OTHER items are already checked (excluding this one)
+                int count = 0;
+                for (int i = 0; i < working.length; i++) if (i != which && working[i]) count++;
+                if (count >= 3) {
+                    // Already at limit — reject this check and uncheck it in the UI
+                    working[which] = false;
+                    ((AlertDialog) dialog).getListView()
+                            .setItemChecked(which, false);
+                    android.widget.Toast.makeText(ctx,
+                            R.string.snooze_max_3, android.widget.Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            working[which] = isChecked;
+        })
+        .setPositiveButton(R.string.ok, (dialog, which) -> {
+            final Set<String> selected = new HashSet<>();
+            for (int i = 0; i < all.length; i++) {
+                if (working[i]) selected.add(String.valueOf(all[i]));
+            }
+            AlarmSnooze.setSnoozeButtons(selected);
+            updateSnoozeBtnPickerLabel(pickerBtn, ctx);
+        })
+        .setNegativeButton(R.string.cancel, null)
+        .show();
+}
+
+// ── Widget background alpha helpers ──────────────────────────────────────
+
+private static void updateWidgetBgBtnLabel(android.widget.Button btn, android.content.Context ctx) {
+    final int alpha = RemoteGlucose.getWidgetBgAlpha();
+    final String label;
+    if (alpha <= 0)       label = ctx.getString(R.string.widget_bg_alpha_none);
+    else if (alpha <= 64) label = ctx.getString(R.string.widget_bg_alpha_light);
+    else if (alpha <= 128)label = ctx.getString(R.string.widget_bg_alpha_medium);
+    else                  label = ctx.getString(R.string.widget_bg_alpha_dark);
+    btn.setText(ctx.getString(R.string.widget_bg_alpha_title) + ": " + label);
+}
+
+private static void showWidgetBgDialog(android.content.Context ctx, android.widget.Button btn) {
+    final int[] alphaValues = {0, 64, 128, 191};   // 0 / 25% / 50% / 75%
+    final int[] labelIds = {
+        R.string.widget_bg_alpha_none,
+        R.string.widget_bg_alpha_light,
+        R.string.widget_bg_alpha_medium,
+        R.string.widget_bg_alpha_dark
+    };
+    final int current = RemoteGlucose.getWidgetBgAlpha();
+    int checkedItem = 0;
+    final String[] labels = new String[alphaValues.length];
+    for (int i = 0; i < alphaValues.length; i++) {
+        labels[i] = ctx.getString(labelIds[i]);
+        if (current >= alphaValues[i] - 32 && current <= alphaValues[i] + 32) checkedItem = i;
+    }
+    final int[] selected = {checkedItem};
+    final android.view.ContextThemeWrapper themedCtx =
+            new android.view.ContextThemeWrapper(ctx, R.style.MyLightAlertDialogTheme);
+    new AlertDialog.Builder(themedCtx)
+        .setTitle(R.string.widget_bg_alpha_title)
+        .setSingleChoiceItems(labels, checkedItem, (dialog, which) -> selected[0] = which)
+        .setPositiveButton(R.string.ok, (dialog, which) -> {
+            RemoteGlucose.setWidgetBgAlpha(alphaValues[selected[0]]);
+            updateWidgetBgBtnLabel(btn, ctx);
+        })
+        .setNegativeButton(R.string.cancel, null)
+        .show();
+}
+
+
+
 MainActivity activity;
 
 /*
@@ -257,6 +384,8 @@ void finish() {
     settinglayout.setVisibility(GONE);
     
     try {
+        // Restore the orientation stored in native settings (may have been
+        // changed by the orientation spinner while Settings was open).
         activity.setRequestedOrientation(Natives.getScreenOrientation());
         }
         catch(       Throwable  error) {
@@ -268,6 +397,7 @@ void finish() {
        }
 //    if(editlabel!=null) removeContentView(editlabel) ;
     removeContentView(settinglayout);
+    settinglayout=null;
     thisone=null;
 
 
@@ -298,7 +428,18 @@ static int getbackgroundcolor(Context context) {
 }
 
 //HorizontalScrollView settinglayout=null;
-FrameLayout settinglayout=null;
+public static FrameLayout settinglayout=null;
+public static boolean isOpen() {
+    return settinglayout!=null&&settinglayout.getVisibility()==View.VISIBLE;
+    }
+public static void relayoutOpen() {
+    if(settinglayout!=null) {
+        // Scroll to top first so landscape (fewer rows, shorter height) does not
+        // keep the portrait scroll offset, which would hide the top-most rows.
+        settinglayout.scrollTo(0,0);
+        settinglayout.requestLayout();
+        }
+    }
     CheckDirectionRadio mmolL;
     CheckDirectionRadio mgdl;
 
@@ -415,9 +556,8 @@ static private void advancedalarm(MainActivity context,View parview) {
             new View[]{prelowalarm[0]},new View[]{prelowalarm[1],prelowalarm[2]},
             new View[]{prehighalarm[0]},new View[]{prehighalarm[1],prehighalarm[2]},
             new View[]{close});
-        var scroll=new ScrollView(context);    
+        var scroll=new ScrollView(context);
         scroll.addView(lay);
-        scroll.setFillViewport(true);
         scroll.setSmoothScrollingEnabled(false);
        scroll.setScrollbarFadingEnabled(true);
        scroll.setVerticalScrollBarEnabled(Applic.scrollbar);
@@ -746,17 +886,7 @@ static private void alarmsettings(MainActivity context,View parview) {
             });
 
 
-//    var usealarm=getcheckbox(context, R.string.USE_ALARM, Natives.getUSEALARM());
-
-    var alarmis=getlabel(context,R.string.alarmis);
-    var alarmtype=new RadioGroup(context);
-
-    int id=0;
-    alarmtype.addView(getradiobuttonId(context,R.string.alarm,id++));
-    alarmtype.addView(getradiobuttonId(context,R.string.notification,id++));
-    alarmtype.addView(getradiobuttonId(context,R.string.media,id++));
-    alarmtype.check(getalarmSoundType());
-
+    var usealarm=getcheckbox(context, R.string.USE_ALARM, Natives.getUSEALARM());
     final boolean alarmloss= Natives.hasalarmloss();
         CheckDirectionBox lossalarm = new CheckDirectionBox(context);
         lossalarm.setChecked(alarmloss); //Value
@@ -796,7 +926,7 @@ static private void alarmsettings(MainActivity context,View parview) {
 //    var Cancel=getbutton(context,R.string.cancel);
      var advanced=getbutton(context,R.string.advanced);
 //    var schedules=getbutton(context,R.string.schedules);
-    View[][] views;
+    Object[][] views;
     var spin=getProfileSpinner(context);
    int pos=Natives.getProfile();
     spin.setSelection(pos);
@@ -812,20 +942,53 @@ static private void alarmsettings(MainActivity context,View parview) {
         getMargins(Save).topMargin=pad;
         views=new View[][]{new View[]{ala},new View[]{spin},new View[]{lowalarm[0]},new View[]{lowalarm[1],lowalarm[2]}, new View[]{highalarm[0]},new View[]{highalarm[1],highalarm[2]},
 new View[]{lossalarm},new View[]{losswait,min,ringlossalarm},
-new View[]{isvalue},new View[]{ringisvalue},new View[]{alarmis,alarmtype},new View[]{advanced},new View[]{Save}};
+new View[]{isvalue},new View[]{ringisvalue},new View[]{usealarm},new View[]{advanced},new View[]{Save}};
         }
     else {
          View[] lostrow={lossalarm,losswait,min,ringlossalarm};
-         View[] row6={isvalue, ringisvalue,alarmis,alarmtype};
+         View[] row6={usealarm,isvalue, ringisvalue};
          View[] rowshow={help,spin,advanced,Save};
          var marg=(int)(GlucoseCurve.getwidth()*.05f);
 
         getMargins(help).setMarginStart(marg);
         getMargins(Save).setMarginEnd(marg);
 
+        // ── Snooze controls (moved from main Settings) ──────────────────────
+        final android.widget.Button snoozeBtnsPicker = getbutton(context, R.string.snooze_buttons_title);
+        updateSnoozeBtnPickerLabel(snoozeBtnsPicker, context);
+        snoozeBtnsPicker.setOnClickListener(v -> showSnoozeBtnDialog(context, snoozeBtnsPicker));
 
-        views=new View[][]{lowalarm,highalarm,lostrow,row6,rowshow};
-        }    
+        android.widget.Button cancelSnoozeBtn = getbutton(context, R.string.snooze_cancel);
+        updateSnoozeBtnLabel(cancelSnoozeBtn, context);
+        cancelSnoozeBtn.setOnClickListener(v -> {
+            if (AlarmSnooze.isActive()) {
+                AlarmSnooze.set(0);
+                updateSnoozeBtnLabel(cancelSnoozeBtn, context);
+                android.widget.Toast.makeText(context,
+                        R.string.snooze_cancelled, android.widget.Toast.LENGTH_SHORT).show();
+            } else {
+                android.widget.Toast.makeText(context,
+                        R.string.snooze_not_active, android.widget.Toast.LENGTH_SHORT).show();
+            }
+        });
+        View[] rowSnooze = new View[]{snoozeBtnsPicker, cancelSnoozeBtn};
+ 
+        View[][] landscapeViews=new View[][]{lowalarm,highalarm,lostrow,row6,rowSnooze,rowshow};
+        View[][] portraitViews=new View[][]{
+                lowalarm,
+                highalarm,
+                new View[]{lossalarm},
+                new View[]{losswait,min},
+                new View[]{ringlossalarm},
+                new View[]{usealarm,isvalue},
+                new View[]{ringisvalue},
+                new View[]{snoozeBtnsPicker},
+                new View[]{cancelSnoozeBtn},
+                new View[]{help,spin},
+                new View[]{advanced,Save}
+        };
+        views=Layout.portraitRows(portraitViews,landscapeViews);
+        }
     View lay;
         Layout layout = new Layout(context, (l, w, h) -> {
             hideSystemUI();
@@ -841,9 +1004,8 @@ new View[]{isvalue},new View[]{ringisvalue},new View[]{alarmis,alarmtype},new Vi
         final int sidepad=(int)(GlucoseCurve.metrics.density*8);
         layout.setPadding(MainActivity.systembarLeft+sidepad,MainActivity.systembarTop*2/3,sidepad+MainActivity.systembarRight,sidepad+MainActivity.systembarBottom*9/10);
         }
-    var scroll=new ScrollView(context);    
+    var scroll=new ScrollView(context);
     scroll.addView(layout);
-    scroll.setFillViewport(true);
     scroll.setSmoothScrollingEnabled(false);
    scroll.setScrollbarFadingEnabled(true);
    scroll.setVerticalScrollBarEnabled(Applic.scrollbar);
@@ -871,11 +1033,7 @@ new View[]{isvalue},new View[]{ringisvalue},new View[]{alarmis,alarmtype},new Vi
         removeContentView(lay) ;
         });
 */
-   // usealarm.setOnCheckedChangeListener( (buttonView,  isChecked) -> Natives.setUSEALARM(isChecked));
-      alarmtype.setOnCheckedChangeListener( (g,i)-> {
-            Natives.setalarmSoundType(i);
-         });
-
+    usealarm.setOnCheckedChangeListener( (buttonView,  isChecked) -> Natives.setUSEALARM(isChecked));
     BooleanSupplier saver=() -> {
       final boolean hasloss= lossalarm.isChecked();
         if(hasloss) {
@@ -1130,11 +1288,6 @@ Scans.setOnCheckedChangeListener( (buttonView,  isChecked) -> { Natives.setshows
         });
         var dexfuture=getcheckbox(context,R.string.dexfuture,Natives.getdexcomPredict());
          dexfuture.setOnCheckedChangeListener( (buttonView,  isChecked) -> Natives.setdexcomPredict(isChecked) );
-          CheckDirectionBox reverseorientation =getcheckbox(context,R.string.invertscreen,(Natives.getScreenOrientation()&SCREEN_ORIENTATION_REVERSE_LANDSCAPE)!=0);
-         reverseorientation.setOnCheckedChangeListener( (buttonView,  isChecked) ->  {
-                int ori= (isChecked?SCREEN_ORIENTATION_REVERSE_LANDSCAPE:SCREEN_ORIENTATION_LANDSCAPE);
-                Natives.setScreenOrientation(ori);
-                });
 
     CheckDirectionBox levelleft= new CheckDirectionBox(context);
     levelleft.setText(R.string.glucoseaxisleft);
@@ -1150,10 +1303,12 @@ Scans.setOnCheckedChangeListener( (buttonView,  isChecked) -> { Natives.setshows
 
         Layout.getMargins(close).setMarginEnd(amarg);
         var themebut=getbutton(context,R.string.theme);
+        Object[][] displayRowsLandscape = new Object[][]{graphrow,new View[]{scalelabel,fixatex, fixatey},targetrow,new View[]{threslabel,threshold,dexfuture},new View[] {levelleft},new View[] {hour12,langspin,iob,fixed},new View[]{colbut,themebut,help,close}};
+        Object[][] displayRowsPortrait = new Object[][]{graphrow,new View[]{scalelabel},new View[]{fixatex, fixatey},targetrow,new View[]{threslabel,threshold},new View[]{dexfuture},new View[] {levelleft},new View[] {hour12,langspin},new View[]{iob,fixed},new View[]{colbut,themebut},new View[]{help,close}};
         lay = new Layout(context, (l, w, h) -> {
                   int[] ret={w,h};
                  return ret;
-               },graphrow,new View[]{scalelabel,fixatex, fixatey},targetrow,new View[]{threslabel,threshold,dexfuture},new View[] {levelleft,reverseorientation},new View[] {hour12,langspin,iob,fixed},new View[]{colbut,themebut,help,close});
+               },Layout.portraitRows(displayRowsPortrait,displayRowsLandscape));
 
        themebut.setOnClickListener(v-> {
             SelectTheme.show(context,lay);
@@ -1181,7 +1336,6 @@ Scans.setOnCheckedChangeListener( (buttonView,  isChecked) -> { Natives.setshows
 
     var scroll=new ScrollView(context);
     scroll.addView(lay);
-    scroll.setFillViewport(true);
     scroll.setSmoothScrollingEnabled(false);
    scroll.setScrollbarFadingEnabled(true);
    scroll.setVerticalScrollBarEnabled(Applic.scrollbar);
@@ -1350,9 +1504,11 @@ private    void mksettings(MainActivity context) {
     Button advanced=null;
 
 
-    View[][] views;
+    Object[][] views;
+    final Object[][][] portraitRowsHolder={null};
+    final Object[][][] landscapeRowsHolder={null};
     final String advhelp=isWearable?null:Natives.advanced();
-
+ 
         var calibration=  getbutton(context,R.string.calibration);
         calibration.setOnClickListener(v-> {
             Calibration.show(context,thelayout[0]);
@@ -1449,9 +1605,74 @@ private    void mksettings(MainActivity context) {
                 }
         floatconfig.setOnClickListener(v-> tk.glucodata.FloatingConfig.show(context,thelayout[0]));
 
+        // ── Dev enhancements: Lock Screen Wallpaper + Alarm Lock Screen ───────
+        CheckDirectionBox lockscreenWp = new CheckDirectionBox(context);
+        lockscreenWp.setText(R.string.lockscreen_wallpaper);
+        lockscreenWp.setChecked(LockScreenWallpaper.isEnabled());
+        lockscreenWp.setOnCheckedChangeListener((buttonView, isChecked) ->
+                LockScreenWallpaper.setEnabled(isChecked));
+
+        CheckDirectionBox alarmLockscreen = new CheckDirectionBox(context);
+        alarmLockscreen.setText(R.string.alarm_lockscreen);
+        alarmLockscreen.setChecked(AlarmLockScreenActivity.isEnabled());
+        alarmLockscreen.setOnCheckedChangeListener((buttonView, isChecked) ->
+                AlarmLockScreenActivity.setEnabled(isChecked));
+
+        // ── Persistent glucose notification (lock-screen card) ────────────────
+        CheckDirectionBox permanentNotif = new CheckDirectionBox(context);
+        permanentNotif.setText(R.string.permanent_glucose_notif);
+        permanentNotif.setChecked(PermanentGlucoseNotification.isEnabled());
+        permanentNotif.setOnCheckedChangeListener((buttonView, isChecked) ->
+                PermanentGlucoseNotification.setEnabled(isChecked));
+
+        // ── Widget background alpha picker ────────────────────────────────────
+        Button widgetBgBtn = getbutton(context, R.string.widget_bg_alpha_title);
+        updateWidgetBgBtnLabel(widgetBgBtn, context);
+        widgetBgBtn.setOnClickListener(v -> showWidgetBgDialog(context, widgetBgBtn));
+
+        // ── Full-screen alarm permission button (Android 14+ only) ────────────
+        // On Android 14 (API 34) USE_FULL_SCREEN_INTENT requires explicit approval.
+        // Without it, AlarmLockScreenActivity never pops up during gaming / fullscreen
+        // apps.  Show a one-tap button that opens the system Settings page for it.
+        View[] rowDevEnhancements2;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+                && !AlarmLockScreenActivity.hasFullScreenIntentPermission()) {
+            Button fsPermBtn = getbutton(context, R.string.alarm_fullscreen_grant);
+            fsPermBtn.setOnClickListener(v ->
+                    AlarmLockScreenActivity.requestFullScreenIntentPermission(context));
+            rowDevEnhancements2 = new View[]{widgetBgBtn, fsPermBtn};
+        } else {
+            rowDevEnhancements2 = new View[]{widgetBgBtn};
+        }
+
         View[] rowglu=new View[]{floatconfig,calibration,glucosenotify};
 //        View[] rowglu=new View[]{floatconfig,glucosenotify};
-        views=new View[][]{row0, hasnfc?new View[]{nfcsound, globalscan,camera}:null,rowglu,new View[]{exchanges,numalarm,alarmbut},numdis, row9};
+        View[] rowDevEnhancements  = new View[]{lockscreenWp, alarmLockscreen, permanentNotif};
+        final Object[][] portraitViews=new Object[][]{
+                row0,
+                hasnfc?new View[]{nfcsound, globalscan}:null,
+                hasnfc&&camera!=null?new View[]{camera}:null,
+                new View[]{floatconfig},
+                new View[]{calibration},
+                new View[]{glucosenotify},
+                new View[]{lockscreenWp},
+                new View[]{alarmLockscreen},
+                new View[]{permanentNotif},
+                new View[]{widgetBgBtn},
+                rowDevEnhancements2.length>1?new View[]{rowDevEnhancements2[1]}:null,
+                new View[]{exchanges},
+                new View[]{numalarm},
+                new View[]{alarmbut},
+                new View[]{changelabels},
+                doLog?new View[]{numdis[1]}:null,
+                new View[]{googlescan},
+                new View[]{displayview},
+                row9
+        };
+        final Object[][] landscapeViews=new Object[][]{row0, hasnfc?new View[]{nfcsound, globalscan,camera}:null,rowglu,rowDevEnhancements,rowDevEnhancements2,new View[]{exchanges,numalarm,alarmbut},numdis, row9};
+        portraitRowsHolder[0]=portraitViews;
+        landscapeRowsHolder[0]=landscapeViews;
+        views=Layout.portraitRows(portraitViews,landscapeViews);
         }
 
     help.setFocusableInTouchMode(true);
@@ -1459,8 +1680,19 @@ private    void mksettings(MainActivity context) {
      help.requestFocus();
      help.requestFocusFromTouch();
 
-        Layout lay = new Layout(context, (l, w, h) -> {
-            hideSystemUI(); int[] ret={w,h};
+        Layout lay = new Layout(context, (view, w, h) -> {
+            hideSystemUI();
+            final Layout l=(Layout)view;
+            if(!isWearable&&portraitRowsHolder[0]!=null&&landscapeRowsHolder[0]!=null) {
+                final Object[][] wanted=Layout.shouldPortraitStack()?portraitRowsHolder[0]:landscapeRowsHolder[0];
+                if(l.getnrrows()!=wanted.length) {
+                    l.empty();
+                    for(Object[] row:wanted) {
+                        l.addrow(row);
+                    }
+                }
+            }
+            int[] ret={w,h};
         
         return ret;
         },views);
@@ -1492,7 +1724,6 @@ private    void mksettings(MainActivity context) {
     scroller.setSmoothScrollingEnabled(false);
    scroller.setVerticalScrollBarEnabled(Applic.scrollbar);
    scroller.setScrollbarFadingEnabled(true);//Crash with NestedScrollView
-    scroller.setFillViewport(true);
     scroller.setPadding(0,0,0,0);
 
    settinglayout=scroller;
@@ -1526,6 +1757,12 @@ private    void mksettings(MainActivity context) {
         settinglayout.bringToFront();
     }
 
+// Scroll to top after the first layout pass.  Without this, the
+// ScrollView may auto-scroll to the focused 'help' button (which is in
+// the last row) or retain a portrait scroll offset after rotation,
+// causing the top of the settings list to appear hidden.
+final FrameLayout sl = settinglayout;
+sl.post(() -> sl.scrollTo(0, 0));
 setvalues();
 }
 
@@ -1666,11 +1903,29 @@ static private void exchanges(MainActivity context, View parent) {
 
 
         var meters = getbutton(context, R.string.meterlist);
+        View[][] exchangeLandscapeRows = new View[][]{
+                new View[]{everSensebroadcast,librelinkbroadcast},
+                new View[]{xdripbroadcast, jugglucobroadcast},
+                new View[]{webserver, uploader, libreview},
+                (Build.VERSION.SDK_INT >= 28) ? new View[]{healthconnect,exportview,mirrorview} :new View[]{exportview,mirrorview},
+                new View[]{help,meters, ok}
+        };
+        View[][] exchangePortraitRows = new View[][]{
+                new View[]{everSensebroadcast},
+                new View[]{librelinkbroadcast},
+                new View[]{xdripbroadcast},
+                new View[]{jugglucobroadcast},
+                new View[]{webserver, uploader},
+                new View[]{libreview},
+                (Build.VERSION.SDK_INT >= 28) ? new View[]{healthconnect} : null,
+                new View[]{exportview,mirrorview},
+                new View[]{help,meters},
+                new View[]{ok}
+        };
         lay = new Layout(context, (l, w, h) -> {
             int[] ret = {w, h};
             return ret;
-        }, new View[]{everSensebroadcast,librelinkbroadcast},new View[]{xdripbroadcast, jugglucobroadcast}, new View[]{webserver, uploader, libreview}, (Build.VERSION.SDK_INT >= 28) ? new View[]{healthconnect,exportview,mirrorview} :new View[]{exportview,mirrorview},
-                new View[]{help,meters, ok});
+        }, Layout.portraitRows(exchangePortraitRows,exchangeLandscapeRows));
 
     final   int pad=(int)(tk.glucodata.GlucoseCurve.metrics.density*10.0);
         lay.setPadding(MainActivity.systembarLeft,MainActivity.systembarTop*3/4,MainActivity.systembarRight+pad,MainActivity.systembarBottom*7/8+(int)(tk.glucodata.GlucoseCurve.metrics.density*5.0));

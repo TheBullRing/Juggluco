@@ -107,7 +107,6 @@ static public void show(MainActivity act,View parent) {
     pasmarg.bottomMargin=(int)(height*.14f);
         var scroll=new ScrollView(act);
         scroll.addView(layout);
-        scroll.setFillViewport(true);
         scroll.setSmoothScrollingEnabled(false);
        scroll.setScrollbarFadingEnabled(true);
        scroll.setVerticalScrollBarEnabled(Applic.scrollbar);

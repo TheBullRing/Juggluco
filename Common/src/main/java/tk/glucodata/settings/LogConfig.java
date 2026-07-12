@@ -99,7 +99,6 @@ static void make(MainActivity act,View parent) {
                 closerow);
             var scroll=new ScrollView(act);
             scroll.addView(layout);
-            scroll.setFillViewport(true);
             scroll.setSmoothScrollingEnabled(false);
            scroll.setScrollbarFadingEnabled(true);
            scroll.setVerticalScrollBarEnabled(Applic.scrollbar);

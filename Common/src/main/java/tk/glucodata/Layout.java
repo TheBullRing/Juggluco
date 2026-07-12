@@ -105,7 +105,32 @@ static final View.AccessibilityDelegate accessDeli = new View.AccessibilityDeleg
 };
 //    public Layout(Context context) { super(context); } public Layout(Context context, AttributeSet attrs) { super(context, attrs); } public Layout(Context context, AttributeSet attrs, int defStyle) { super(context, attrs, defStyle); } 
 private static final String LOG_ID="Layout";
-
+private static final int PORTRAIT_WRAP_FACTOR = 95;
+ 
+public static boolean shouldPortraitStack() {
+    if (Applic.isWearable) return false;
+    // Use Configuration orientation — it is updated by the OS before
+    // onConfigurationChanged fires and is reliable on the UI thread even
+    // before the GL surface has been resized (GlucoseCurve.width/height
+    // are only updated from the GL thread in onSurfaceChanged, so they
+    // may still carry pre-rotation values when menus are being rebuilt).
+    android.content.Context ctx = Applic.getContext();
+    if (ctx != null) {
+        int orient = ctx.getResources().getConfiguration().orientation;
+        return orient == android.content.res.Configuration.ORIENTATION_PORTRAIT;
+    }
+    // Fallback to GL dimensions if no context is available yet.
+    return GlucoseCurve.getheight() > GlucoseCurve.getwidth();
+    }
+public static Object[][] portraitRows(Object[][] portrait, Object[][] landscape) {
+    return shouldPortraitStack()?portrait:landscape;
+    }
+public static Object[] portraitRow(Object[] portrait, Object[] landscape) {
+    return shouldPortraitStack()?portrait:landscape;
+    }
+private int portraitWrapWidth(int width) {
+    return (width*PORTRAIT_WRAP_FACTOR)/100;
+    }
  private   void reserve(int nr) {
     rowend=new int[nr];
     notgone=new int[nr];
@@ -185,6 +210,9 @@ private void addRowChildren(Object[] rowobjects,int row) {
                  }
                }
              }
+       // Always record the child-count boundary, even for null rows, so that
+       // rowend[row] is never left at 0 and domeasure()'s running `start`
+       // pointer does not regress back to an earlier row's children.
        rowend[row]=getChildCount();
        }
 private void addEl(View el,int row) {
@@ -259,6 +287,9 @@ public int addrow(boolean rev,Object[] inrow) {
 public int addrow(Object[] inrow) {
     return addrow(true,inrow);
     }
+public int getnrrows() {
+    return rownr;
+    }
 static private int childWidth(View child) {
       return  Math.max(child.getMinimumWidth(),child.getMeasuredWidth());
    }
@@ -311,6 +342,36 @@ int rowgeo(final int start,final int row,int widthMeasureSpec, int heightMeasure
     notgone[row]=not;
     maxwidths[row]=maxWidth;
     baselines[row]=maxbaseline;
+    // When portrait-wrapping is active and this row has multiple children that
+    // will wrap onto extra lines, simulate the same wrap logic used in layrow()
+    // so that domeasure() returns an accurate total height and the ScrollView
+    // does not clip the wrapped content.
+    if(totHeight>0 && not>1 && matchparent[row]==null && shouldPortraitStack()) {
+        final int availWidth = android.view.View.MeasureSpec.getSize(widthMeasureSpec)
+                               - getPaddingLeft() - getPaddingRight();
+        final int wrapWidth = portraitWrapWidth(availWidth);
+        int lineUsed = 0;
+        int lines = 1;
+        for(int c=start;c<end;c++) {
+            View child = getChildAt(c);
+            if(child==null||child.getVisibility()==GONE) continue;
+            ViewGroup.LayoutParams params=child.getLayoutParams();
+            int leftmargin=0,rightmargin=0;
+            if(params instanceof ViewGroup.MarginLayoutParams) {
+                var margins=(ViewGroup.MarginLayoutParams)params;
+                leftmargin=margins.leftMargin;
+                rightmargin=margins.rightMargin;
+                }
+            final int needed=childWidth(child)+leftmargin+rightmargin;
+            if(lineUsed>0 && lineUsed+needed>wrapWidth) {
+                lines++;
+                lineUsed=needed;
+                } else {
+                lineUsed+=needed;
+                }
+            }
+        totHeight*=lines;
+        }
     return totHeight;
     }
 boolean usebaseline=true;
@@ -462,7 +523,7 @@ final int layrow(final int top,final int start,final int row,final int maxheight
        child.layout(left, childtop, left + width, childtop+useheight);
        return top+Math.min(childheight+bottommargin+topmargin,maxheight);
        }
-  int left =hierleft; 
+  int left =hierleft;
   int tussen;
   if(matchparent[row]==null) {
       tussen=(maxwidth-maxwidths[row])/(nr-1);
@@ -471,8 +532,12 @@ final int layrow(final int top,final int start,final int row,final int maxheight
       }
   else {
         tussen=0;
-    }    
+    }
+  final boolean wrapPortrait=shouldPortraitStack()&&matchparent[row]==null&&nr>1;
+  final int wrapWidth=portraitWrapWidth(maxwidth);
   int bottom=0;
+  int rowtop=top;
+  int rowbottom=top;
   for(int i = start; i < end; i++) {
       View child = getChildAt(i);
       if(child!=null&&child.getVisibility()!=GONE) {
@@ -490,27 +555,33 @@ final int layrow(final int top,final int start,final int row,final int maxheight
             }
          final int childheight= childHeight(child);
          int cheight= Math.min(childheight,maxheight-bottommargin-topmargin);
+         int childwidth = childWidth(child);
+         int width = child==matchparent[row]?(maxwidth-maxwidths[row]):childwidth;
+         int needed=width+leftmargin+rightmargin;
+         if(wrapPortrait&&left>hierleft&&(left-hierleft)+needed>wrapWidth) {
+             left=hierleft;
+             rowtop=rowbottom;
+             }
         int tophier;
          if(usebaseline) {
              int childbaseline=child.getBaseline();
              if(childbaseline<0) childbaseline=(int)(cheight/2-basefromiddle);
-              tophier=(top+baseline-childbaseline)+topmargin;
+              tophier=(rowtop+baseline-childbaseline)+topmargin;
               }
          else {
-            tophier=top+topmargin;
+            tophier=rowtop+topmargin;
             }
-         int childwidth = childWidth(child);
-         int width = child==matchparent[row]?(maxwidth-maxwidths[row]):childwidth;
          int childleft=left+leftmargin;
           int bot=tophier+cheight;
          child.layout(childleft, tophier, childleft + width, bot);
          bot+=bottommargin;
          if(bot>bottom) bottom=bot;
+         if(bot>rowbottom) rowbottom=bot;
          left += (width+tussen)+leftmargin+rightmargin;
          }
        }
      return bottom;
-    }
+     }
     @Override
 protected void onLayout(boolean changed, int l, int t, int r, int b) {
 

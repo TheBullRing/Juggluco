@@ -24,11 +24,13 @@
 
 package tk.glucodata;
 
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -49,22 +51,41 @@ static public boolean on=false;
 static private final String LOG_ID="Menus";
 static public void show(MainActivity act) {
 	on=true;
-	LayoutInflater flater= LayoutInflater.from(act);
+	// Use the Activity's current configuration to pick the correct layout
+	// qualifier (layout-port vs layout).  LayoutInflater.from(act) may return
+	// a cached inflater whose configuration lags after a rotation handled via
+	// onConfigurationChanged (no Activity recreation), so we clone it with the
+	// up-to-date Resources instead.
+	android.content.res.Configuration cfg = act.getResources().getConfiguration();
+	android.util.Log.e("ORIENT_DEBUG","Menus.show orientation="+cfg.orientation+" screenW="+cfg.screenWidthDp+" screenH="+cfg.screenHeightDp);
+	// createConfigurationContext picks the correct layout qualifier (layout-port vs
+	// layout) but strips the Activity theme.  Wrap it in a ContextThemeWrapper so
+	// buttons and checkboxes keep their Material styles.
+	android.content.Context cfgCtx = new ContextThemeWrapper(
+		act.createConfigurationContext(cfg), act.getTheme());
+	LayoutInflater flater = LayoutInflater.from(act).cloneInContext(cfgCtx);
 	View view = flater.inflate(R.layout.menus, null, false);
-      view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
- //       view.setTextDirection(View.TEXT_DIRECTION_LTR);
+	     view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+	//       view.setTextDirection(View.TEXT_DIRECTION_LTR);
 
+	// Wrapper receives the system-bar padding so the inner GridLayout/ScrollView
+	// measures correctly within the available (inset-free) bounds.
+	// All removeContentView calls below target the wrapper, which is the view
+	// actually attached to the Activity window.
+	FrameLayout wrapper = new FrameLayout(act);
+	wrapper.addView(view, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+	wrapper.setBackgroundColor(Applic.backgroundcolor);
 
 	view.setAccessibilityDelegate(Layout.accessDeli);
-        view.setBackgroundColor( Applic.backgroundcolor);
-      act.themeLightBars();
+	       view.setBackgroundColor( Applic.backgroundcolor);
+	     act.themeLightBars();
 	act.setonback(() -> {
-   		act.lightBars(!getInvertColors( ));
-			   {if(doLog) {Log.i(LOG_ID,"onback");};};
-			   on=false;
-			removeContentView(view);
-				act.requestRender();
-			});
+	  		act.lightBars(!getInvertColors( ));
+		   {if(doLog) {Log.i(LOG_ID,"onback");};};
+		   on=false;
+		removeContentView(wrapper);
+			act.requestRender();
+		});
 
     var menusviewview=view.findViewById(R.id.menusview);menusviewview.setOnClickListener(v ->{}); 
         CheckBox systemuiview=view.findViewById(R.id.systemui);
@@ -78,14 +99,14 @@ static public void show(MainActivity act) {
 			   on=false;
 
    		act.lightBars(!getInvertColors( ));
-			removeContentView(view);
+			removeContentView(wrapper);
 				act.requestRender();
 		}); 
         var watchview=view.findViewById(R.id.watch);watchview.setOnClickListener(v ->{
 
 				if(!isWearable) {
    		   act.lightBars(!getInvertColors( ));
-					removeContentView(view);
+					removeContentView(wrapper);
 					tk.glucodata.Watch.show(act);
 					}
 
@@ -93,11 +114,11 @@ static public void show(MainActivity act) {
         var sensorview=view.findViewById(R.id.sensor);sensorview.setOnClickListener(v ->{
 
    		   act.lightBars(!getInvertColors( ));
-				removeContentView(view);
+				removeContentView(wrapper);
 			       bluediag.start(act);
 		}); 
         var settingsview=view.findViewById(R.id.settings);settingsview.setOnClickListener(v ->{
-					removeContentView(view);
+					removeContentView(wrapper);
 					Settings.set(act);
 	}); 
         Button aboutview=view.findViewById(R.id.about);
@@ -121,13 +142,13 @@ static public void show(MainActivity act) {
 		  if(c!=null) {
 			  {if(doLog) {Log.i(LOG_ID,"EXPORT");};};
    		   act.lightBars(!getInvertColors( ));
-		     removeContentView(view);
+		     removeContentView(wrapper);
 		     c.dialogs.showexport(act,c.getWidth(),c.getHeight(),null); 
 		     }
 
 	}); 
         var mirrorview=view.findViewById(R.id.mirror);mirrorview.setOnClickListener(v ->{
-		     removeContentView(view);
+		     removeContentView(wrapper);
 			(new Backup()).mkbackupview(act);
 
 	}); 
@@ -139,7 +160,7 @@ static public void show(MainActivity act) {
 						var c=Applic.app.curve;
 						if (c != null) {
    		         act.lightBars(!getInvertColors( ));
-							removeContentView(view);
+							removeContentView(wrapper);
 							c.numberview.addnumberview(act);
 							if (!smallScreen)
 								c.showkeyboard(act);
@@ -151,7 +172,7 @@ static public void show(MainActivity act) {
 				var c = Applic.app.curve;
 				if (c != null) {
    		         act.lightBars(!getInvertColors( ));
-					removeContentView(view);
+					removeContentView(wrapper);
 					Natives.makenumbers();
 					act.requestRender();
 					c.getnumcontrol(act);
@@ -162,7 +183,7 @@ static public void show(MainActivity act) {
 
 			if(Natives.makepercentages()) {
    		         act.lightBars(!getInvertColors( ));
-				removeContentView(view);
+				removeContentView(wrapper);
 				act.requestRender();
 				Stats.mkstats(act);
 				}
@@ -171,7 +192,7 @@ static public void show(MainActivity act) {
 
 			);
         var talkview=view.findViewById(R.id.talk);talkview.setOnClickListener(v ->{
-		removeContentView(view);
+		removeContentView(wrapper);
 		tk.glucodata.Talker.config(act);}); 
         CheckBox glucosefloatview=view.findViewById(R.id.glucosefloat);glucosefloatview.setOnCheckedChangeListener( (buttonView,  isChecked)->{
 		Floating.setfloatglucose(act,isChecked);
@@ -181,7 +202,7 @@ static public void show(MainActivity act) {
         var lastscanview=view.findViewById(R.id.lastscan);lastscanview.setOnClickListener(v ->{
 		if(Natives.showlastscan()) {
                act.lightBars(!getInvertColors( ));
-			removeContentView(view);
+			removeContentView(wrapper);
 			act.requestRender();
 			}
 	}); 
@@ -249,7 +270,7 @@ static public void show(MainActivity act) {
         var nowview=view.findViewById(R.id.now);nowview.setOnClickListener(v ->{
 
                act.lightBars(!getInvertColors( ));
-		removeContentView(view);
+		removeContentView(wrapper);
 	Natives.settonow();
 				act.requestRender();
 
@@ -258,7 +279,7 @@ static public void show(MainActivity act) {
 		  var c=Applic.app.curve;
 		  if(c!=null) {
                act.lightBars(!getInvertColors( ));
-			removeContentView(view);
+			removeContentView(wrapper);
 			c.startsearch();
 			}
 		}); 
@@ -267,42 +288,42 @@ static public void show(MainActivity act) {
 		  var c=Applic.app.curve;
 		  if(c!=null) {
                act.lightBars(!getInvertColors( ));
-			removeContentView(view);
+			removeContentView(wrapper);
 			  c.startdatepick(Natives.getstarttime());
 			  }
 		
 		}); 
         var daybackview=view.findViewById(R.id.dayback);daybackview.setOnClickListener(v ->{
                act.lightBars(!getInvertColors( ));
-			removeContentView(view);
+			removeContentView(wrapper);
 		Natives.prevday(1);
 				act.requestRender();
 		}); 
         var daylaterview=view.findViewById(R.id.daylater);daylaterview.setOnClickListener(v ->{
                act.lightBars(!getInvertColors( ));
-			removeContentView(view);
+			removeContentView(wrapper);
 		Natives.nextday(1);
 				act.requestRender();
 		}); 
         var weekbackview=view.findViewById(R.id.weekback);weekbackview.setOnClickListener(v ->{
 
                act.lightBars(!getInvertColors( ));
-			removeContentView(view);
+			removeContentView(wrapper);
 		Natives.prevday(7);
 				act.requestRender();
 	}); 
         var weeklaterview=view.findViewById(R.id.weeklater);weeklaterview.setOnClickListener(v ->{
 
                act.lightBars(!getInvertColors( ));
-			removeContentView(view);
+			removeContentView(wrapper);
 		Natives.nextday(7);
 				act.requestRender();
 		}); 
    
-	  // view.setPadding(0,MainActivity.systembarTop,0,0);
-  	view.setPadding(MainActivity.systembarLeft,MainActivity.systembarTop*3/4,MainActivity.systembarRight,MainActivity.systembarBottom);
-
-	act.addMyContentView(view, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+	wrapper.setPadding(MainActivity.systembarLeft, MainActivity.systembarTop * 3 / 4,
+		MainActivity.systembarRight, MainActivity.systembarBottom);
+	android.util.Log.e("ORIENT_DEBUG","Menus.show padding L="+MainActivity.systembarLeft+" T="+MainActivity.systembarTop+" R="+MainActivity.systembarRight+" B="+MainActivity.systembarBottom);
+	act.addMyContentView(wrapper, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
 
     }
 

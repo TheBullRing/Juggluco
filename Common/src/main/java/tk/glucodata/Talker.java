@@ -502,7 +502,6 @@ public static void config(MainActivity context) {
 
             var scroll=new ScrollView(context);
             scroll.addView(lay);
-            scroll.setFillViewport(true);
             scroll.setSmoothScrollingEnabled(false);
            scroll.setScrollbarFadingEnabled(true);
            scroll.setVerticalScrollBarEnabled(Applic.scrollbar);
