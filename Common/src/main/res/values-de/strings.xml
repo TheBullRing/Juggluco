@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <string name="language">de</string>
     <string name="languagename">Sprache</string>
 
@@ -8,11 +8,11 @@
 
      <string name="garmin_initialization_error">"Init Garmin Connect SDK fehlgeschlagen: "</string>
 
-     <string name="error_nfc_device_not_supported">Scannen unmöglich, kein NFC auf diesem Gerät</string>
-     <string name="error_nfc_disabled">NFC ist deaktiviert, du kannst es in den Geräteeinstellungen aktivieren.</string>
+     <string name="error_nfc_device_not_supported">Scannen unmÃ¶glich, kein NFC auf diesem GerÃ¤t</string>
+     <string name="error_nfc_disabled">NFC ist deaktiviert, du kannst es in den GerÃ¤teeinstellungen aktivieren.</string>
 
     <string name="kerfstok_missing_title">Kerfstok ist nicht auf der Uhr installiert</string>
-     <string name="kerfstok_missing_message">Kerfstok ist nicht auf der Uhr installiert. Im Garmin Connectiq Store ist es erhältlich</string>
+     <string name="kerfstok_missing_message">Kerfstok ist nicht auf der Uhr installiert. Im Garmin Connectiq Store ist es erhÃ¤ltlich</string>
 
 
      <string name="alarm_description">Glukose zu niedrig oder zu hoch</string>
@@ -33,8 +33,8 @@
      <string name="bluetoothdisabled">Bluetooth deaktiviert</string>
      <string name="amountsname">Mengen</string>
      <string name="mealsname">Mahlzeiten</string>
-     <string name="closename">Schließen</string>
-     <string name="exporthelp">Speichert bis zum letzten auf dem Bildschirm angezeigten Wert. Der Anfang ist die Anzahl der angegebenen Tage zurück in der Zeit.</string>
+     <string name="closename">SchlieÃŸen</string>
+     <string name="exporthelp">Speichert bis zum letzten auf dem Bildschirm angezeigten Wert. Der Anfang ist die Anzahl der angegebenen Tage zurÃ¼ck in der Zeit.</string>
      <string name="detect">Erkennen</string>
      <string name="testip">IP testen</string>
      <string name="testlabel">Etikett Testen</string>
@@ -42,11 +42,11 @@
      <string name="activeonly">Nur aktiv</string>
      <string name="both">Beides</string>
      <string name="receivefrom">Empfangen von</string>
-     <string name="datapresentuntil">"Daten auf Empfänger vorhanden bis: "</string>
+     <string name="datapresentuntil">"Daten auf EmpfÃ¤nger vorhanden bis: "</string>
      <string name="visible">Sichtbar</string>
      <string name="password">Passwort</string>
-     <string name="delete">Löschen</string>
-     <string name="specifyreceiveordata">Geben Sie „Empfangen von“ oder Daten an, die an ein anderes Gerät gesendet werden sollen</string>
+     <string name="delete">LÃ¶schen</string>
+     <string name="specifyreceiveordata">Geben Sie â€žEmpfangen vonâ€œ oder Daten an, die an ein anderes GerÃ¤t gesendet werden sollen</string>
      <string name="specifyip">Du solltest eine IP angeben</string>
      <string name="portrange">Port sollte zwischen 1024 und 65535 liegen</string>
      <string name="start">Start</string>
@@ -57,7 +57,7 @@
      <string name="sync">Sync</string>
      <string name="alarms">Alarme</string>
      <string name="save">Speichern</string>
-  <string name="addconnectionbutton">Verbindung hinzufügen</string>
+  <string name="addconnectionbutton">Verbindung hinzufÃ¼gen</string>
   <string name="offtouch">Off touch</string>
   <string name="glucosestatusbar">Glukosebenachrichtigung</string>
   <string name="lowglucosealarm">Niedrigen Glukosewert</string>
@@ -66,9 +66,9 @@
   <string name="weight">"Gewicht: "</string>
   <string name="ringtonename">Klingelton</string>
   <string name="highglucosealarm">Hohen Glukosewert</string>
-  <string name="valueavailablenotification">Benachrichtigung über verfügbaren Wert</string>
+  <string name="valueavailablenotification">Benachrichtigung Ã¼ber verfÃ¼gbaren Wert</string>
   <string name="lossofsignalalarm">Signalverlustalarm nach</string>
- <string name="cantsetminutes">"Minuten können nicht eingestellt werden auf "</string>
+ <string name="cantsetminutes">"Minuten kÃ¶nnen nicht eingestellt werden auf "</string>
   <string name="minutes">Minuten</string>
   <string name="targetrange">"Zielbereich: "</string>
   <string name="graphrange">"Grafikbereich: "</string>
@@ -82,11 +82,11 @@
   <string name="orientation_free">Freie Drehung</string>
   <string name="screen_rotation">Bildschirmdrehung</string>
   <string name="nfcsound">NFC-Sound</string>
-  <string name="manuallyscale">Skala manuell ändern für</string>
+  <string name="manuallyscale">Skala manuell Ã¤ndern fÃ¼r</string>
   <string name="time">Zeit</string>
   <string name="glucose">Glukose</string>
-  <string name="sensorviabluetooth">Sensor über Bluetooth</string>
-  <string name="sensorviabluetoothon">Für Alarme in Nicht-Mirror-Geräten sollte \'Sensor über Bluetooth\' aktiviert sein</string>
+  <string name="sensorviabluetooth">Sensor Ã¼ber Bluetooth</string>
+  <string name="sensorviabluetoothon">FÃ¼r Alarme in Nicht-Mirror-GerÃ¤ten sollte \'Sensor Ã¼ber Bluetooth\' aktiviert sein</string>
   <string name="setunitfirst">Einheit zuerst setzen</string>
   <string name="numberlabels">Zahlenetiketten</string>
   <string name="colors">Farben</string>
@@ -94,12 +94,12 @@
   <string name="display">Anzeige</string>
   <string name="shutcuts">Shortcuts</string>
   <string name="newname">Neu</string>
-  <string name="deletelast">Letztes löschen</string>
+  <string name="deletelast">Letztes lÃ¶schen</string>
   <string name="meal">Mahlzeit:</string>
   <string name="ringshort">Ton</string>
   <string name="days">Tage</string>
-  <string name="invaliddays">\' ungültig. Tage sollten eine natürliche Zahl sein.</string>
-  <string name="summarygraph">Überblick Graph</string>
+  <string name="invaliddays">\' ungÃ¼ltig. Tage sollten eine natÃ¼rliche Zahl sein.</string>
+  <string name="summarygraph">Ãœberblick Graph</string>
   <string name="forget">Vergessen</string>
   <string name="reenable">Reenable</string>
   <string name="failure_info">Info</string>
@@ -111,23 +111,23 @@
   <string name="unlock_key">Handshake</string>
   <string name="glucose_value">Glukosewert</string>
   <string name="info">Info</string>
-  <string name="devicespecific">Gerätespezifische Einstellung festlegen</string>
+  <string name="devicespecific">GerÃ¤tespezifische Einstellung festlegen</string>
   <string name="dozeupdate">Update im Doze-Modus</string>
   <string name="refresh">Aktualisieren</string>
   <string name="sendqueue">Queue senden</string>
   <string name="reinit">Reinit</string>
   <string name="watchappinstalled">Watch-App auf Watch installiert</string>
   <string name="error">Fehler</string>
-  <string name="additem">Komponente hinzufügen</string>
+  <string name="additem">Komponente hinzufÃ¼gen</string>
   <string name="round">"runden "</string>
   <string name="repeat">Wiederholen</string>
  <string name="ingredient">Zutat: </string>
-  <string name="select">Auswählen</string>
+  <string name="select">AuswÃ¤hlen</string>
   <string name="carbohydrate">Kohlenhydrat: </string>
   <string name="carbo">Kohlenhydrate</string>
   <string name="total">Summe: </string>
   <string name="mealtotal">Summe Mahlzeit: </string>
-  <string name="quantity">Quantität</string>
+  <string name="quantity">QuantitÃ¤t</string>
   <string name="per">" pro "</string>
   <string name="specifyingredient">Du musst die Zutat angeben</string>
   <string name="specifyhowmuch">Du musst angeben, wie viel</string>
@@ -147,7 +147,7 @@
   <string name="nowatchesfound">Keine Uhren gefunden</string>
   <string name="getkerfstok">Hol dir die Watch-App Kerfstok</string>
   <string name="mealname">Mahlzeit</string>
-  <string name="deletequestion">Löschen?</string>
+  <string name="deletequestion">LÃ¶schen?</string>
   <string name="soundname">Ton</string>
   <string name="play">Play</string>
   <string name="defaultname">Standard</string>
@@ -155,7 +155,7 @@
   <string name="permission">Berechtigung</string>
   <string name="shortcut">Shortcut</string>
   <string name="value">Wert</string>
-  <string name="nextpage">Nächste Seite</string>
+  <string name="nextpage">NÃ¤chste Seite</string>
   <string name="ips">IPs:</string>
   <string name="port">Port</string>
   <string name="saved">"gespeichert"</string>
@@ -163,15 +163,15 @@
   <string name="notsaved">Nicht gespeichert</string>
   <string name="failedbyexception">Durch Ausnahme fehlgeschlagen</string>
   <string name="nodata">Keine Daten</string>
-  <string name="addsensorenddate">Enddatum des Sensors zur Kalender-App hinzufügen</string>
+  <string name="addsensorenddate">Enddatum des Sensors zur Kalender-App hinzufÃ¼gen</string>
   <string name="enddatesensor">"Enddatumssensor "</string>
-  <string name="open">Öffnen</string>
+  <string name="open">Ã–ffnen</string>
   <string name="withoutsensor">Ohne Sensor</string>
   <string name="wronglibrary">Bibliothek funktioniert nicht richtig, versuche es mit einer anderen</string>
   <string name="installedlibrary">Installierte Bibliothek</string>
   <string name="cantextract">Kann %s nicht extrahieren, versuche es mit einer anderen apk</string>
-  <string name="connectwithsensor">Aktiv für Sensorverbindung</string>
-  <string name="exchangedata">Aktiv für Datenverbindung</string>
+  <string name="connectwithsensor">Aktiv fÃ¼r Sensorverbindung</string>
+  <string name="exchangedata">Aktiv fÃ¼r Datenverbindung</string>
   <string name="nonewvalue">"Kein neuer Wert seit "</string>
   <string name="lowglucose">" Niedriger Glukosewert!"</string>
   <string name="highglucose">" Hoher Glukosewert!"</string>
@@ -186,7 +186,7 @@
   <string name="highglucoseshort">" Hyper!"</string>
   <string name="notentered">" nicht eingetragen"</string>
   <string name="spacedand">" und "</string>
-     <string name="disturb">Stören</string>
+     <string name="disturb">StÃ¶ren</string>
      <string name="uselibreview">An Libreview senden</string>
      <string name="libreviewname">Libreview</string>
      <string name="sendnow">Jetzt senden</string>
@@ -201,29 +201,29 @@
   <string name="dontsend">Nicht senden</string>
   <string name="sendamounts">Mengen senden</string>
   <string name="resendquestion">Daten erneut senden?</string>
-  <string name="resendmessage">Achten Sie darauf, keine überlappenden Daten an Libreview zu senden.</string>
+  <string name="resendmessage">Achten Sie darauf, keine Ã¼berlappenden Daten an Libreview zu senden.</string>
   <string name="getaccountidquestion">Konto-ID von Libreview erhalten?</string>
-  <string name="getaccountidmessage">Die Konto-ID wird benötigt, um Libre3-Sensoren zu verwenden, die mit der Abbotts Libre3-App mit diesem Libreview-Konto aktiviert werden.</string>
-  <string name="deleteconnection">Verbindung löschen?</string>
+  <string name="getaccountidmessage">Die Konto-ID wird benÃ¶tigt, um Libre3-Sensoren zu verwenden, die mit der Abbotts Libre3-App mit diesem Libreview-Konto aktiviert werden.</string>
+  <string name="deleteconnection">Verbindung lÃ¶schen?</string>
   <string name="wakelock">Wakelock</string>
  <string name="wifi">WLAN</string>
  <string name="toolarg"> ist zu lang</string>
  <string name="heartrate">Herzfrequenz</string>
  <string name="xdripbroadcast">xDrip Broadcast</string>
  <string name="sensorpermission">Sensoren-Berechtigung</string>
- <string name="sensorpermissionmessage">erforderlich, um die Herzfrequenz anzuzeigen. Sie können es in Geräteeinstellungen, Apps, Berechtigungen festlegen</string>
+ <string name="sensorpermissionmessage">erforderlich, um die Herzfrequenz anzuzeigen. Sie kÃ¶nnen es in GerÃ¤teeinstellungen, Apps, Berechtigungen festlegen</string>
  <string name="floatglucose">Schwebende Glukose</string>
  <string name="floatglucoseshort">Schwebende</string>
- <string name="fontsize">Schriftgröße</string>
- <string name="fonttoolarge">Schriftgröße zu groß: max=</string>
+ <string name="fontsize">SchriftgrÃ¶ÃŸe</string>
+ <string name="fonttoolarge">SchriftgrÃ¶ÃŸe zu groÃŸ: max=</string>
  <string name="foreground">Vordergrund</string>
  <string name="background">Hintergrund</string>
  <string name="backgroundshort">Hinter-</string>
  <string name="transparent">Transparent</string>
- <string name="touchable">Berührbar</string>
+ <string name="touchable">BerÃ¼hrbar</string>
 <string name="overlaypermission">Erlaubnis erteilen:</string>
-  <string name="deletereminder">Erinnerung löschen?</string>
-  <string name="deletelabel">Label löschen?</string>
+  <string name="deletereminder">Erinnerung lÃ¶schen?</string>
+  <string name="deletelabel">Label lÃ¶schen?</string>
 
  <string name="finish">Beenden</string>
  <string name="finishsensormessage">Diesen Sensor nicht mehr zum Streamen verwenden?</string>
@@ -233,13 +233,13 @@
   <string name="emailaddresstooshort">E-Mail-Adresse zu kurz </string>
   <string name="emailaddresstoolong">E-Mail-Adresse zu lang </string>
   <string name="password8">Passwort sollte mindestens 8 Zeichen lang sein </string>
-  <string name="password36">Die maximale Passwortlänge beträgt 36 Zeich en</string>
+  <string name="password36">Die maximale PasswortlÃ¤nge betrÃ¤gt 36 Zeich en</string>
   <string name="fromlibreview">Von Libreview</string>
   <string name="manual">Manuell</string>
 <string name="noaccountidspecified">Keine Konto-ID angegeben </string>
 <string name="wrongformat">Falsches Format </string>
 
-<string name="noapplisteningto">"Keine App hört "</string>
+<string name="noapplisteningto">"Keine App hÃ¶rt "</string>
 
 <string name="secret">api_secret</string>
 <string name="withoutsaving">Verlassen ohne zu speichern?</string>
@@ -247,10 +247,10 @@
 <string name="usessl">SSL verwenden</string>
 <string name="fullchain">Full chain</string>
 
-         <string name="privatekey">Privater Schlüssel</string>
+         <string name="privatekey">Privater SchlÃ¼ssel</string>
 <string name="localonly">Nur lokal</string>
 <string name="toolongsecret">: api_secret zu lang. max=</string>
-<string name="invalidport">" ungültige Portnummer"</string>
+<string name="invalidport">" ungÃ¼ltige Portnummer"</string>
 <string name="newsecret">"neues api_secret: "</string>
 <string name="newport">"neuer port="</string>
 
@@ -261,25 +261,25 @@
      <string name="dosis">" Dosis "</string>
      <string name="doses">" Dosen "</string>
   <string name="penfailed">Fehler beim Lesen des Insulinpens. Versuchen Sie es erneut</string>
-  <string name="changeinsulin">"Insulintyp ändern in "</string>
+  <string name="changeinsulin">"Insulintyp Ã¤ndern in "</string>
      <string name="type">"Typ: "</string>
-    <string name="dosesprior">Füg nur Dosen hinzu von nach:</string>
-    <string name="modify">Ändern</string>
+    <string name="dosesprior">FÃ¼g nur Dosen hinzu von nach:</string>
+    <string name="modify">Ã„ndern</string>
   <string name="notsynced">Nicht synchronisiert</string>
-  <string name="lossdata">Das Zurücksetzen auf die standardwerte kann zu Datenverlust führen.</string>
+  <string name="lossdata">Das ZurÃ¼cksetzen auf die standardwerte kann zu Datenverlust fÃ¼hren.</string>
   <string name="defaults">Standardwerte</string>
     <string name="notify">Benachrichtigen</string>
  <string name="separate">Separat</string>
     <string name="librecurrent">Sofort</string>
     <string name="USE_ALARM">Alarm ist alarm</string>
     <string name="speed">Geschwindigkeit</string>
-    <string name="pitch">Tonhöhe</string>
+    <string name="pitch">TonhÃ¶he</string>
   <string name="talker">Sprecher</string>
   <string name="secondsbetween">Sekunden dazwischen</string>
   <string name="test">Test</string>
 
  <string name="novalue">Kein Wert</string>
- <string name="menus">Menü</string>
+ <string name="menus">MenÃ¼</string>
 <string name="system_ui">System UI</string>
 <string name="watches">Uhren</string>
 <string name="sensor">Sensor</string>
@@ -295,9 +295,9 @@
 <string name="last_scan">Letzter Scan</string>
 <string name="date">Datum</string>
 <string name="day_back">Vortag</string>
-<string name="day_later">Tag später</string>
-<string name="week_back">Woche zurück</string>
-<string name="week_later">Woche später</string>
+<string name="day_later">Tag spÃ¤ter</string>
+<string name="week_back">Woche zurÃ¼ck</string>
+<string name="week_later">Woche spÃ¤ter</string>
  <string name="speakmessages">Mitteilungen sprechen</string>
   <string name="speakalarms">Alarme sprechen</string>
   <string name="speakglucose">Glukose sprechen</string>
@@ -307,14 +307,14 @@
   <string name="can_t_play">"Kann nicht abgespielt werden "</string>
   <string name="seconds">" Sekunden"</string>
   <string name="duration_can_t_be_negative">"Dauer kann nicht negativ sein: "</string>
-  <string name="too_large_maximum_65535">" zu groß, Maximum=65535, "</string>
-  <string name="too_large">"zu groß"</string>
+  <string name="too_large_maximum_65535">" zu groÃŸ, Maximum=65535, "</string>
+  <string name="too_large">"zu groÃŸ"</string>
   <string name="can_t_use_specification">Spezifikation kann nicht verwendet werden</string>
-  <string name="turn_on_nearby_devices_permission">Aktivieren Sie die Berechtigung „GERÄTE IN DER NÄHE“</string>
+  <string name="turn_on_nearby_devices_permission">Aktivieren Sie die Berechtigung â€žGERÃ„TE IN DER NÃ„HEâ€œ</string>
      <string name="enable_bluetooth">Bluetooth aktivieren</string>
   <string name="turn_on_location_permission">Standortberechtigung aktivieren</string>
   <string name="bluetooth_is_turned_off">Bluetooth ist ausgeschaltet</string>
-  <string name="allsentnoreceive">Wenn alles an einen Host gesendet wird, sollte „Empfangen von“ deaktiviert sein.</string>
+  <string name="allsentnoreceive">Wenn alles an einen Host gesendet wird, sollte â€žEmpfangen vonâ€œ deaktiviert sein.</string>
   <string name="nomirrorport">Die Portnummer sollte sich vom Klonport unterscheiden</string>
   <string name="nohttpport">Die Portnummer sollte sich vom http-Port unterscheiden</string>
 <string name="ready_in">" bereit in "</string>
@@ -322,14 +322,14 @@
 <string name="endstime">" endet um diese Zeit"</string>
 <string name="triednothing">Nichts versucht</string>
 <string name="success">Erfolg</string>
-<string name="resendwarning">Alle Daten werden erneut gesendet, was einige Zeit in Anspruch nimmt und Konsequenzen für Libreview und Kefstok haben kann</string>
+<string name="resendwarning">Alle Daten werden erneut gesendet, was einige Zeit in Anspruch nimmt und Konsequenzen fÃ¼r Libreview und Kefstok haben kann</string>
 <string name="parseip">Fehler beim Parsen der IP</string>
-<string name="toomanyhosts">Maximale Anzahl an Hosts überschritten</string>
+<string name="toomanyhosts">Maximale Anzahl an Hosts Ã¼berschritten</string>
 <string name="senthosts">Juggluco sendet an bis zu 6 Hosts</string>
    <string name="clampnow">Fest jetzt</string>
     <string name="sendfrom">Senden von:</string>
- <string name="changestartbutton">Anfang ändern</string>
- <string name="floatjuggluco">Über</string>
+ <string name="changestartbutton">Anfang Ã¤ndern</string>
+ <string name="floatjuggluco">Ãœber</string>
  <string name="threshold">Schwelle</string>
  <string name="untouchablequestion">Schwebende Glukose untastbar machen?</string>
 
@@ -342,23 +342,23 @@
 <string name="text">Text</string>
 <string name="arrow">Pfeil</string>
 
-   <string name="notalldata">ACHTUNG: „Empfangen von“ nicht eingestellt, ohne alle Daten zu senden.</string>
+   <string name="notalldata">ACHTUNG: â€žEmpfangen vonâ€œ nicht eingestellt, ohne alle Daten zu senden.</string>
 
-<string name="libresetalllabels">Das Häkchen bei „Mengen senden“ können Sie erst setzen, nachdem Sie bei jedem Etikett angegeben haben, was damit geschehen soll.</string>
+<string name="libresetalllabels">Das HÃ¤kchen bei â€žMengen sendenâ€œ kÃ¶nnen Sie erst setzen, nachdem Sie bei jedem Etikett angegeben haben, was damit geschehen soll.</string>
    <string name="photo">Foto</string>
 <string name="photomessage">Scannen Sie die Datenmatrix eines Dexcom G7/ONE+ oder Sibionics GS1 Sensors oder den Klon-QR-Code</string>
    <string name="exchanges">Daten austauschen</string>
 
    <string name="initializing">Initialisierung</string> 
-   <string name="startjuggluco">Juggluco läuft auf dem Telefon?\n\nWLAN und Bluetooth aktiviert?</string>
+   <string name="startjuggluco">Juggluco lÃ¤uft auf dem Telefon?\n\nWLAN und Bluetooth aktiviert?</string>
    <string name="connected">Verbunden!</string> 
-   <string name="useclose">Schließknopf</string> 
-   <string name="filesize">Dateigröße</string> 
+   <string name="useclose">SchlieÃŸknopf</string> 
+   <string name="filesize">DateigrÃ¶ÃŸe</string> 
    <string name="logging">Protokollieren</string> 
     <string name="not">Nicht</string>
     <string name="datapresent">"Daten vorhanden: "</string>
-<string name="overwrite">Überschreiben?</string>
-<string name="usedweight">WARNUNG: Gewicht (%.1f) größer als 0</string>
+<string name="overwrite">Ãœberschreiben?</string>
+<string name="usedweight">WARNUNG: Gewicht (%.1f) grÃ¶ÃŸer als 0</string>
 
 <string name="verylowglucose">" Sehr niedriger Glukose!"</string>
 <string name="veryhighglucose">" Sehr hoher Glukose!"</string>
@@ -369,27 +369,27 @@
 <string name="prelowglucose">" Bald niedriger Glukose!"</string>
 <string name="prehighglucose">" Bald hoher Glukose!"</string>
 
-<string name="verylowglucosealarm">Alarm für sehr niedrigen Glukosewert</string>
-<string name="veryhighglucosealarm">Alarm für sehr hohen Glukosewert</string>
+<string name="verylowglucosealarm">Alarm fÃ¼r sehr niedrigen Glukosewert</string>
+<string name="veryhighglucosealarm">Alarm fÃ¼r sehr hohen Glukosewert</string>
 
 <string name="prelowglucosealarm">Alarm, wenn bald unter</string>
-<string name="prehighglucosealarm">Alarm, wenn bald über</string>
-<string name="schedules">Zeitpläne</string>
+<string name="prehighglucosealarm">Alarm, wenn bald Ã¼ber</string>
+<string name="schedules">ZeitplÃ¤ne</string>
 <string name="profile">"Profil "</string>
 <string name="lossofsignal">Signalverlust</string>
 <string name="valuenotification">Wertbenachrichtigung</string>
  <string name="advanced">Extra</string>
 <string name="scantranstitle">TRANSMITTER-Datenmatrix scannen</string>
 <string name="scantransmessage">Sibionics 2 Sensor-Datenmatrix erfolgreich gescannt. \nScannen Sie jetzt die Transmitter-Datenmatrix.</string>
- <string name="mirrorscansucces">Verbindung zum linken mittleren Menü → Klon erfolgreich hinzugefügt.</string>
+ <string name="mirrorscansucces">Verbindung zum linken mittleren MenÃ¼ â†’ Klon erfolgreich hinzugefÃ¼gt.</string>
  <string name="nolibrelink">Verwenden Sie stattdessen EverSense Broadcast. Siehe Hilfe.</string>
  <string name="calibration">Kalibrierung</string>
-<string name="exclude">Ausschließen</string>
+<string name="exclude">AusschlieÃŸen</string>
 <string name="calibratepast">Auf Vergangenheit anwenden</string>
 <string name="bloodvar">Blutzucker: </string>
-<string name="calibrate_a">Steigung ändern</string>
+<string name="calibrate_a">Steigung Ã¤ndern</string>
 <string name="calibrated">Kalibriert</string>
-<string name="delete_calibration">Kalibrierung löschen?</string>
+<string name="delete_calibration">Kalibrierung lÃ¶schen?</string>
 <string name="hide">Ausblenden</string>
 <string name="sensorstreamed"></string>
 <string name="sensornotstreamed">Noch nichts</string>
@@ -398,10 +398,10 @@
  <string name="writedown">Aufschreiben!</string>
  <string name="switchtowatch">Wechseln</string>
  <string name="last">"Letzte: "</string>
- <string name="bloodafter">"Nur Glukosewerte hinzufügen ab:"</string>
-<string name="specifyblood">Zuerst das Etikett für Blutzucker angeben"</string>
-<string name="meterlist">"Blutzuckermessgeräte"</string>
-<string name="finddevices">"Geräte suchen"</string>
+ <string name="bloodafter">"Nur Glukosewerte hinzufÃ¼gen ab:"</string>
+<string name="specifyblood">Zuerst das Etikett fÃ¼r Blutzucker angeben"</string>
+<string name="meterlist">"BlutzuckermessgerÃ¤te"</string>
+<string name="finddevices">"GerÃ¤te suchen"</string>
 <string name="nonewdata">"Keine neuen Daten"</string>
 <string name="newdata">"Neue Daten"</string>
 <string name="isconnected">Verbunden</string>
@@ -421,16 +421,15 @@
 <string name="username">Username</string>
 <string name="turnserver">Turn Server</string>
  <string name="ICElabeltooshort">FEHLER: Das ICE-Label sollte mindestens 16 Byte lang sein</string>
-<string name="attr_ble_scan">Bluetooth-Glukosesensor-Scan</string>
 <string name="divorcename">Entkoppeln</string>
 <string name="divorcemessage">Soll der Sensor mit einem anderen Telefon oder einer anderen Smartwatch (anstatt diesem) verbunden werden?</string>
 <string name="unpairsuccess">Entkoppeln erfolgreich"</string>
 <string name="unpairfailed">Entkoppeln fehlgeschlagen"</string>
-<string name="warmup">Aufwärmen {0}</string>
+<string name="warmup">AufwÃ¤rmen {0}</string>
 <string name="releasingsensor">Sensor wird freigegeben</string>
 <string name="sensorreleased">Sensor freigegeben</string>
 <string name="releasefailed">Freigabe fehlgeschlagen</string>
-<string name="timedout">Zeitüberschreitung</string>
+<string name="timedout">ZeitÃ¼berschreitung</string>
 <string name="unpairing">"Entkopplung "</string>
 <string name="unpairingwatch">Entkopplung der Uhr "</string>
 
@@ -438,25 +437,25 @@
 
 <string name="successful">erfolgreich</string>
     <string name="use">Aktivieren</string>
-<string name="connecttosensor">Verbindung zum Sensor wird hergestellt…</string>
+<string name="connecttosensor">Verbindung zum Sensor wird hergestelltâ€¦</string>
 
-<string name="clear">Löschen</string>
+<string name="clear">LÃ¶schen</string>
 
-<string name="clearingmemory">Sensorspeicher wird gelöscht</string>
+<string name="clearingmemory">Sensorspeicher wird gelÃ¶scht</string>
 
-<string name="clearmessage">Sensor neu starten? Sensorspeicher löschen?</string>
+<string name="clearmessage">Sensor neu starten? Sensorspeicher lÃ¶schen?</string>
 
-<string name="clearing">Löschen"</string>
+<string name="clearing">LÃ¶schen"</string>
 
-<string name="clearsuccess">Löschen erfolgreich"</string>
+<string name="clearsuccess">LÃ¶schen erfolgreich"</string>
 
-<string name="clearfailed">Löschen fehlgeschlagen"</string>
+<string name="clearfailed">LÃ¶schen fehlgeschlagen"</string>
 
 <string name="sensors">Sensoren</string>
 
-<string name="titlewebserverneed">Webserver benötigt</string>
+<string name="titlewebserverneed">Webserver benÃ¶tigt</string>
 
-<string name="messagewebserverneed">Gehen Sie im linken Menü zu Einstellungen → Daten austauschen → Webserver, um den Webserver zu aktivieren</string>
+<string name="messagewebserverneed">Gehen Sie im linken MenÃ¼ zu Einstellungen â†’ Daten austauschen â†’ Webserver, um den Webserver zu aktivieren</string>
 
 <string name="nostreamvalues">Keine Stream-werte</string>
 
@@ -467,13 +466,13 @@
 
 <string name="wrongcode">Falscher QR-Code</string>
 
-<string name="leave">schließen?</string>
+<string name="leave">schlieÃŸen?</string>
 
 <string name="id0message">Die ID muss ungleich 0 sein</string>
 
 <string name="emailnotused">E-Mail-Passwort-Kombination nicht verwendet und wird nicht gespeichert.</string>
 
-<string name="connecttoserver">Verbindung zum Server wird hergestellt…</string>
+<string name="connecttoserver">Verbindung zum Server wird hergestelltâ€¦</string>
 
 <string name="retrievefailed">Abruf der Konto-ID fehlgeschlagen</string>
 
@@ -502,14 +501,14 @@
     <string name="snooze_cancelled">Schlummern abgebrochen</string>
     <string name="snooze_not_active">Kein aktives Schlummern</string>
     <string name="snooze_buttons_title">Schlummertasten</string>
-    <string name="snooze_buttons_summary">Wähle bis zu 3 Schlummerdauern für den Alarmbildschirm</string>
+    <string name="snooze_buttons_summary">WÃ¤hle bis zu 3 Schlummerdauern fÃ¼r den Alarmbildschirm</string>
     <string name="notif_snooze_label">Schlummern</string>
     <string name="notif_snooze_min">%1$d Min.</string>
     <string name="notif_stop_alarm">Alarm stoppen</string>
-    <string name="alarm_fullscreen_grant">Vollbildberechtigung für Alarm erteilen</string>
+    <string name="alarm_fullscreen_grant">Vollbildberechtigung fÃ¼r Alarm erteilen</string>
 
-    <string name="lockscreen_dismiss">Alarm schließen</string>
-    <string name="lockscreen_dismiss_hold">Gedrückt halten zum Schließen</string>
+    <string name="lockscreen_dismiss">Alarm schlieÃŸen</string>
+    <string name="lockscreen_dismiss_hold">GedrÃ¼ckt halten zum SchlieÃŸen</string>
     <string name="lockscreen_snooze">Schlummern</string>
     <string name="lockscreen_snoozed_until">Schlummern bis</string>
     <string name="widget_glucose_chart">Glukose-Diagramm</string>

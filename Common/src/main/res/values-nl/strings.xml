@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <string name="language">nl</string>
     <string name="languagename">Taal</string>
 
@@ -13,8 +13,8 @@
 
     <string name="error_nfc_disabled">NFC staat uit, je kunt het aanzetten in Androids Instellingen.</string>
 
-   <string name="kerfstok_missing_title">Kerfstok niet geïnstalleerd</string>
-    <string name="kerfstok_missing_message">Kerfstok niet geïnstalleerd. Je kunt het krijgen in Garmin connectiq</string>
+   <string name="kerfstok_missing_title">Kerfstok niet geÃ¯nstalleerd</string>
+    <string name="kerfstok_missing_message">Kerfstok niet geÃ¯nstalleerd. Je kunt het krijgen in Garmin connectiq</string>
 
 
     <string name="alarm_description">Te hoog of te laag glucosee</string>
@@ -121,12 +121,12 @@
  <string name="refresh">Refresh</string>
  <string name="sendqueue">Zend queue</string>
  <string name="reinit">Reinit</string>
- <string name="watchappinstalled">Horloge app geïnstalleerd op horloge</string>
+ <string name="watchappinstalled">Horloge app geÃ¯nstalleerd op horloge</string>
  <string name="error">Fout</string>
  <string name="additem">Component toevoegen</string>
  <string name="round">"Afronden "</string>
  <string name="repeat">Herhaal</string>
- <string name="ingredient">Ingrediënt: </string>
+ <string name="ingredient">IngrediÃ«nt: </string>
  <string name="select">Selecteren</string>
  <string name="carbohydrate">Koolhydraten: </string>
  <string name="carbo">Koolhydraten</string>
@@ -134,9 +134,9 @@
  <string name="mealtotal">Maaltijd totaal: </string>
  <string name="quantity">Omvang</string>
  <string name="per">" per "</string>
- <string name="specifyingredient">Je moet een ingrediënt aangeven</string>
+ <string name="specifyingredient">Je moet een ingrediÃ«nt aangeven</string>
  <string name="specifyhowmuch">Je moet aangeven hoeveel</string>
- <string name="define">Definiëren</string>
+ <string name="define">DefiniÃ«ren</string>
  <string name="edit">Wijzigen</string>
  <string name="name">Naam:</string>
  <string name="carbperunit">Koolhydraten/eenheid:</string>
@@ -173,7 +173,7 @@
  <string name="open">Open</string>
  <string name="withoutsensor">Zonder sensor</string>
  <string name="wronglibrary">Library werkt niet goed, probeer een andere</string>
- <string name="installedlibrary">Library geïnstalleerd</string>
+ <string name="installedlibrary">Library geÃ¯nstalleerd</string>
  <string name="cantextract">Kan %s niet uit apk halen, probeer een andere apk</string>
 <string name="connectwithsensor">Actief v. sensorverbinding</string>
 <string name="exchangedata">Actief voor dataconnectie</string>
@@ -221,7 +221,7 @@
   <string name="overlaypermission">Toestemming geven:</string>
   <string name="deletereminder">Herinnering verwijderen?</string>
   <string name="deletelabel">Label verwijderen?</string>
-  <string name="finish">Beëindig</string>
+  <string name="finish">BeÃ«indig</string>
   <string name="finishsensormessage">Deze sensor niet meer gebruiken voor streaming?</string> 
 
 
@@ -338,8 +338,8 @@
 <string name="glucosearrowvaluecomplicationlabel">Waarde + pijl</string>
 <string name="text">Tekst</string>
 <string name="arrow">Pijl</string>
-   <string name="notalldata">LETOP: “Ontvang van” niet aangevinkt, zonder alle data te zenden.</string>
-<string name="libresetalllabels">Je kunt ‘Zend hoeveelheden’ pas aanvinken nadat je voor elk label hebt aangegeven wat ermee moet gebeuren.</string>
+   <string name="notalldata">LETOP: â€œOntvang vanâ€ niet aangevinkt, zonder alle data te zenden.</string>
+<string name="libresetalllabels">Je kunt â€˜Zend hoeveelhedenâ€™ pas aanvinken nadat je voor elk label hebt aangegeven wat ermee moet gebeuren.</string>
    <string name="photo">Foto</string>
 <string name="photomessage">Scan data matrix van een Dexcom G7/ONE+ of Sibionics GS1 sensor of de kloon QR code</string>
    <string name="exchanges">Deel gegevens</string>
@@ -376,7 +376,7 @@
  <string name="valuenotification">Waarde aanwezig</string>
 <string name="scantranstitle">TRANSMITTER datamatrix scannen</string>
 <string name="scantransmessage">Sibionics 2 sensor datamatrix succesvol gescand. \nScan nu de transmitter datamatrix."</string>
- <string name="mirrorscansucces">Verbinding toevoegt aan linker midden menu → Kloon</string>
+ <string name="mirrorscansucces">Verbinding toevoegt aan linker midden menu â†’ Kloon</string>
  <string name="nolibrelink">Gebruik in plaats hiervan EverSense Broadcast. Zie help.</string>
  <string name="calibration">Kalibratie</string>
 <string name="exclude">Sluit uit</string>
@@ -407,9 +407,7 @@
 <string name="enternums">Voer hoeveelheden in op</string>
  <string name="connectionl">verbinding</string>
  <string name="ICElabeltooshort">FOUT: ICE label moet minimaal 16 bytes groot zijn</string>
- <string name="attr_ble_scan">Bluetooth glucose sensor scannen</string>
-
-<string name="divorcename">Ontkoppelen</string>
+ <string name="divorcename">Ontkoppelen</string>
 
 <string name="divorcemessage">Sensor toestaan verbinding te maken met een andere telefoon of horloge (in plaats van deze)?</string>
 
@@ -433,7 +431,7 @@
 
 <string name="successful">geslaagd</string>
     <string name="use">Activeren</string>
-    <string name="connecttosensor">Verbinding maken met sensor…</string>
+    <string name="connecttosensor">Verbinding maken met sensorâ€¦</string>
 
 <string name="clear">Wissen</string>
 
@@ -459,7 +457,7 @@
 <string name="leave">Vertrekken?</string>
 <string name="id0message">ID moet anders zijn dan 0</string>
 <string name="emailnotused">E-mailwachtwoordcombinatie niet gebruikt en wordt niet opgeslagen.</string>
-<string name="connecttoserver">Verbinding maken met server…</string>
+<string name="connecttoserver">Verbinding maken met serverâ€¦</string>
 <string name="retrievefailed">Het ophalen van account-ID is mislukt</string>
 
 <string name="themesname">Thema\'s:</string>

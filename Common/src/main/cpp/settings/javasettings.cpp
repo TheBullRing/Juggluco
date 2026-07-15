@@ -433,12 +433,18 @@ extern "C" JNIEXPORT jboolean  JNICALL   fromjava(gethaslibrary)(JNIEnv *env, jc
     }
 
 
+// Sentinel: stored value 127 (0x7F, max for uint8_t:7) means
+// ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED (-1 in Java).
+static constexpr uint8_t ORIENTATION_UNSPECIFIED_STORED = 127u;
+
 extern "C" JNIEXPORT jint  JNICALL   fromjava(getScreenOrientation)(JNIEnv *env, jclass cl) {
-    return settings->data()->orientation;
+    uint8_t stored = settings->data()->orientation;
+    return (stored == ORIENTATION_UNSPECIFIED_STORED) ? -1 : (jint)stored;
     }
 
 extern "C" JNIEXPORT void  JNICALL   fromjava(setScreenOrientation)(JNIEnv *env, jclass cl,jint val) {
-    settings->data()->orientation=val;
+    settings->data()->orientation =
+        (val < 0) ? ORIENTATION_UNSPECIFIED_STORED : (uint8_t)val;
     }
 extern "C" JNIEXPORT jboolean  JNICALL   fromjava(getInvertColors)(JNIEnv *env, jclass cl) {
     return settings->data()->invertcolorsget();

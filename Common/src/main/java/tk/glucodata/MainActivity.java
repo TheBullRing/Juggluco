@@ -80,7 +80,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.view.Gravity;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.UiThread;
@@ -106,6 +109,7 @@ import java.util.Locale;
 //import androidx.activity.OnBackPressedDispatcher;
 //import com.google.android.apps.auto.sdk.CarActivity;
 import tk.glucodata.DynamicThemeUtils;
+import tk.glucodata.chart.GlucoseChartViewBridgeKt;
 
 //import static tk.glucodata.Natives.hidescanresults;
 
@@ -201,39 +205,90 @@ private void startdisplay() {
     if(Applic.Nativesloaded)
         app.needsnatives() ;
 
-    curve = new GlucoseCurve(this);
-   {if(doLog) {Log.i(LOG_ID,"After curve = new GlucoseCurve(this);");};};
-   if(!isWearable) {
-      if(Build.VERSION.SDK_INT >= 30) {
-             setOnApplyWindowInsetsListener(curve,(v, windowInsets) -> {
-             setsizes(this);
-             Insets  insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-             {if(doLog) {Log.i(LOG_ID, "systemBars: left="+insets.left+ " right="+insets.right+ " bottom="+insets.bottom+ " top="+insets.top);};};
-             Natives.systembar(insets.left, insets.top, insets.right, insets.bottom);
+    if (!Applic.useVicoChart()) {
+        // ── Legacy OpenGL/NanoVG path ─────────────────────────────────────────
+        curve = new GlucoseCurve(this);
+       {if(doLog) {Log.i(LOG_ID,"After curve = new GlucoseCurve(this);");};};
+       if(!isWearable) {
+          if(Build.VERSION.SDK_INT >= 30) {
+                 setOnApplyWindowInsetsListener(curve,(v, windowInsets) -> {
+                 setsizes(this);
+                 Insets  insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                 {if(doLog) {Log.i(LOG_ID, "systemBars: left="+insets.left+ " right="+insets.right+ " bottom="+insets.bottom+ " top="+insets.top);};};
+                 Natives.systembar(insets.left, insets.top, insets.right, insets.bottom);
 
-             systembarLeft=insets.left;
-             systembarTop=insets.top;
-             systembarRight=insets.right;
-             systembarBottom=insets.bottom;
-             if(rtl) {
-                 systembarStart=systembarRight;
-                 systembarEnd=systembarLeft;
-                 }
-             else {
-                 systembarStart=systembarLeft;
-                 systembarEnd=systembarRight;
-                 }
-             requestRender();
-             onceshowintro();
-             return windowInsets;
-          });
+                 systembarLeft=insets.left;
+                 systembarTop=insets.top;
+                 systembarRight=insets.right;
+                 systembarBottom=insets.bottom;
+                 if(rtl) {
+                     systembarStart=systembarRight;
+                     systembarEnd=systembarLeft;
+                     }
+                 else {
+                     systembarStart=systembarLeft;
+                     systembarEnd=systembarRight;
+                     }
+                 requestRender();
+                 onceshowintro();
+                 return windowInsets;
+              });
+              }
+        else {
+            }
+
+          lightBars(!getInvertColors( ));
           }
-    else {
-        }
+        setContentView(curve);
+    } else {
+        // ── Vico / Compose path ───────────────────────────────────────────────
+        // GlucoseCurve is still created so that all existing machinery that
+        // depends on curve != null continues to work: NFC handling, menu
+        // posting, dialogs, onResume/onPause, removeviews(), etc.
+        // It is NOT set as the content view — the ComposeView is shown instead.
+        curve = new GlucoseCurve(this);
+        {if(doLog) {Log.i(LOG_ID,"Vico path: GlucoseCurve created (not shown)");}}
 
-      lightBars(!getInvertColors( ));
-      }
-    setContentView(curve);
+        android.view.View composeView = GlucoseChartViewBridgeKt.createGlucoseChartView(
+                this,
+                () -> {
+                    // Single tap: open menu.
+                    // curve is not attached to a window so curve.post() silently drops;
+                    // use RunOnUiThread which always has a valid looper.
+                    Applic.RunOnUiThread(() -> Menus.show(MainActivity.this));
+                    return kotlin.Unit.INSTANCE;
+                },
+                entry -> {
+                    // Long-press: open number-entry at the tapped data point.
+                    Applic.RunOnUiThread(() -> curve.numberview.addnumberview(MainActivity.this, entry.getTimestampMs()));
+                    return kotlin.Unit.INSTANCE;
+                }
+        );
+
+        if(!isWearable) {
+            if(Build.VERSION.SDK_INT >= 30) {
+                // Window insets go to the ComposeView (visible) but also
+                // propagate native systembar values so the C++ layer stays
+                // correctly sized (needed for dialogs that use Natives.systembar).
+                setOnApplyWindowInsetsListener(composeView, (v, windowInsets) -> {
+                    setsizes(this);
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                    {if(doLog) {Log.i(LOG_ID, "Vico systemBars: left="+insets.left+" right="+insets.right+" bottom="+insets.bottom+" top="+insets.top);}}
+                    Natives.systembar(insets.left, insets.top, insets.right, insets.bottom);
+                    systembarLeft   = insets.left;
+                    systembarTop    = insets.top;
+                    systembarRight  = insets.right;
+                    systembarBottom = insets.bottom;
+                    if(rtl) { systembarStart=systembarRight; systembarEnd=systembarLeft; }
+                    else    { systembarStart=systembarLeft;  systembarEnd=systembarRight; }
+                    onceshowintro();
+                    return windowInsets;
+                });
+            }
+            lightBars(!getInvertColors());
+        }
+        setContentView(composeView);
+    }
     getlibrary.getlibrary(this);//after setfilesdir for settings — must come BEFORE setRequestedOrientation
     // Apply the stored orientation only when it differs from the current one.
     // Calling setRequestedOrientation with the value already active is a no-op
@@ -242,11 +297,14 @@ private void startdisplay() {
     // NOTE: must be called AFTER getlibrary so the initVersion migration has
     // already run and orientation has the correct post-migration value.
     try {
-        int stored = Natives.getScreenOrientation();
-        android.util.Log.e("ORIENT_DEBUG","startdisplay: stored="+stored+" getRequestedOrientation="+getRequestedOrientation());
-        if (getRequestedOrientation() != stored) {
-            android.util.Log.e("ORIENT_DEBUG","startdisplay: calling setRequestedOrientation("+stored+")");
-            setRequestedOrientation(stored);
+        // Old UI (OpenGL/NanoVG) was always landscape — the C++ renderer has no
+        // portrait layout.  Force it regardless of the user's rotation preference.
+        // New UI (Vico) respects the stored preference (default: free rotation).
+        int desired = Applic.useVicoChart()
+                ? Natives.getScreenOrientation()
+                : android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        if (getRequestedOrientation() != desired) {
+            setRequestedOrientation(desired);
         }
     } catch (Throwable ignored) {}
    if(!isWearable) {
@@ -1021,11 +1079,23 @@ public void onConfigurationChanged(Configuration newConfig) {
         }
     removeconfig();
     updateRtl(newConfig);
-    if(menuwasopen&&curve!=null) {
-        curve.post(() -> Menus.show(this));
+    // In the Vico path the ComposeView is not recreated on rotation — nudge the
+    // data repository so RTL direction and insets are re-evaluated immediately.
+    if(Applic.useVicoChart()) {
+        tk.glucodata.chart.NativeGraphDataRepository.notifyDataChanged();
         }
-    if(settingswasopen&&curve!=null) {
-        curve.post(() -> tk.glucodata.settings.Settings.set(this));
+    if(menuwasopen&&curve!=null) {
+        Applic.RunOnUiThread(() -> Menus.show(this));
+        }
+    if(settingswasopen) {
+        // Explicitly close any lingering Settings overlay before re-opening.
+        // doonback() above consumes the Closerun from the back-stack, but if it
+        // was already popped (e.g. by a prior back-press) settinglayout stays
+        // non-null.  closeview() is idempotent and guarantees settinglayout==null
+        // so that the new mksettings() call assigns mmolL/mgdl fresh and
+        // setvalues() never NPEs.
+        tk.glucodata.settings.Settings.closeview();
+        Applic.RunOnUiThread(() -> tk.glucodata.settings.Settings.set(this));
         }
    }
 public void requestRender() {
@@ -1844,6 +1914,65 @@ public void addMyContentView(View view, ViewGroup.LayoutParams params) {
     if(Applic.DynamicTheme)
         DynamicThemeUtils.applyTheme(view);
     }
+
+/**
+ * Shows the NFC scan result as a native View overlay in the Vico path.
+ *
+ * In the old OpenGL/NanoVG path the scan result (glucose value + status) is
+ * rendered by C++ badscanMessage() onto the GL canvas.  In the Vico path the
+ * GLSurfaceView has no EGL surface so that code never runs.
+ *
+ * This method replicates the behaviour: it reads the last scanned glucose value
+ * via Natives.lastglucose() (which returns the already-formatted display string
+ * including units, exactly as shown by the C++ layer) and shows it in a
+ * semi-transparent overlay that auto-dismisses after 8 seconds or on tap.
+ *
+ * Called from GlucoseCurve.summaryready() in the Vico path only.
+ */
+public static void showVicoScanResult(MainActivity act) {
+    if (act == null) return;
+    final strGlucose sg = Natives.lastglucose();
+    if (sg == null || sg.value == null || sg.value.isEmpty()) return;
+
+    // Build label: "<value>\n<sensorid>" — mirrors the C++ showoldscan() layout.
+    final String sensorLine = (sg.sensorid != null && !sg.sensorid.isEmpty())
+            ? "\n" + sg.sensorid : "";
+    final String text = sg.value + sensorLine;
+
+    // Style the overlay to match the app's inverted-color setting.
+    final boolean dark = Natives.getInvertColors();
+    final int bgColor  = dark ? 0xE6000000 : 0xE6FFFFFF;   // 90 % black / white
+    final int txtColor = dark ? 0xFFFFFFFF : 0xFF000000;
+
+    TextView tv = new TextView(act);
+    tv.setText(text);
+    tv.setTextColor(txtColor);
+    tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, Applic.largefontsize > 0
+            ? Applic.largefontsize * 1.4f
+            : GlucoseCurve.metrics.density * 32f);
+    tv.setGravity(Gravity.CENTER);
+    tv.setBackgroundColor(bgColor);
+    final int pad = (int)(GlucoseCurve.metrics.density * 24);
+    tv.setPadding(pad, pad, pad, pad);
+
+    final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            Gravity.CENTER);
+    act.addMyContentView(tv, params);
+
+    // Auto-dismiss after 8 seconds.
+    final Runnable dismiss = () -> {
+        try { tk.glucodata.settings.Settings.removeContentView(tv); } catch (Throwable ignored) {}
+    };
+    Applic.app.getHandler().postDelayed(dismiss, 8000L);
+
+    // Also dismiss immediately on tap.
+    tv.setOnClickListener(v -> {
+        Applic.app.getHandler().removeCallbacks(dismiss);
+        dismiss.run();
+    });
+}
 
 }
 

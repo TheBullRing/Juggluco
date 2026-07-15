@@ -84,6 +84,7 @@
  <string name="orientation_reverse_landscape">Reverse landscape</string>
  <string name="orientation_free">Free rotation</string>
  <string name="screen_rotation">Screen rotation</string>
+ <string name="use_vico_chart">Use new chart (Vico)</string>
  <string name="nfcsound">NFC sound</string>
  <string name="manuallyscale">Manually scale </string>
  <string name="time">Time</string>
@@ -460,7 +461,6 @@
 <string name="username">Username</string>
 <string name="turnserver">Turn Server</string>
  <string name="ICElabeltooshort">ERROR: ICE label must be at least 16 bytes.</string>
- <string name="attr_ble_scan">Bluetooth glucose sensor scanning</string>
     <string name="divorcename">Unpair</string>
     <string name="divorcemessage">Allow sensor to connect to another phone or watch (instead of this one)?</string>
     <string name="unpairsuccess">" Unpair successful"</string>
@@ -542,4 +542,6 @@
     <string name="permanent_notif_channel_desc">Always-visible glucose value, trend and time on the lock screen</string>
     <string name="trend_arrow_desc">Trend arrow</string>
     <string name="glucose_graph_desc">Glucose history graph</string>
+    <string name="deletemeter">Remove meter information. Measurements will remain.</string>
+
 </resources>

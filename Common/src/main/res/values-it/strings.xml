@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <string name="language">it</string>
     <string name="languagename">Lingua</string>
     <string name="app_name">Juggluco</string>
@@ -9,10 +9,10 @@
     <string name="garmin_initialization_error">"Setup Garmin connect SDK fallita: "</string>
 
     <string name="error_nfc_device_not_supported">Scansione impossibile, NFC non disponibile su questo dispositivo</string>
-    <string name="error_nfc_disabled">NFC è disabilitato, abilitalo nelle impostazioni del dispositivo.</string>
+    <string name="error_nfc_disabled">NFC Ã¨ disabilitato, abilitalo nelle impostazioni del dispositivo.</string>
 
-   <string name="kerfstok_missing_title">Kerfstok non è installato sull\'orologio</string>
-    <string name="kerfstok_missing_message">Kerfstok non è installato sull\'orologio. Puoi scaricarlo dallo store di Garmin Connect IQ</string>
+   <string name="kerfstok_missing_title">Kerfstok non Ã¨ installato sull\'orologio</string>
+    <string name="kerfstok_missing_message">Kerfstok non Ã¨ installato sull\'orologio. Puoi scaricarlo dallo store di Garmin Connect IQ</string>
 
 
     <string name="alarm_description">Glucosio troppo basso o troppo alto</string>
@@ -35,7 +35,7 @@
     <string name="amountshort">@string/amountsname</string>
     <string name="mealsname">Pasti</string>
     <string name="closename">Chiudi</string>
-    <string name="exporthelp">Salva fino all\'ultimo valore visualizzato sullo schermo. L\'inizio è il numero di giorni indicato nel passato.</string>
+    <string name="exporthelp">Salva fino all\'ultimo valore visualizzato sullo schermo. L\'inizio Ã¨ il numero di giorni indicato nel passato.</string>
     <string name="detect">Rileva</string>
     <string name="testip">Test IP</string>
     <string name="testlabel">Test Etichetta</string>
@@ -54,7 +54,7 @@
     <string name="now">Ora</string>
     <string name="dontchangeamounts">Mirror invia i valori</string>
     <string name="thishost">Questo host:</string>
-    <string name="dozemode">Modalità doze?</string>
+    <string name="dozemode">ModalitÃ  doze?</string>
     <string name="sync">Sync</string>
     <string name="alarms">Allarmi</string>
     <string name="save">Salva</string>
@@ -71,15 +71,15 @@
  <string name="lossofsignalalarm">Allarme di perdita di segnale dopo</string>
  <string name="cantsetminutes">"Non puoi impostare i minuti a "</string>
   <string name="minutes">minuti</string>
- <string name="toolarg"> è troppo lungo</string>
+ <string name="toolarg"> Ã¨ troppo lungo</string>
  <string name="targetrange">"Range target: "</string>
  <string name="graphrange">"Range del grafico: "</string>
- <string name="unit">"Unità: "</string>
+ <string name="unit">"UnitÃ : "</string>
  <string name="glucoseaxisleft">Asse del glucosio a SINISTRA</string>
  <string name="startsapp">Una scansione avvia l\'app</string>
  <string name="patchedlibrebroadcast">Libre patchato</string>
  <string name="disablecamerakey">Disabilita il tasto camera</string>
- <string name="invertscreen">Ruota di 180°</string>
+ <string name="invertscreen">Ruota di 180Â°</string>
  <string name="orientation_landscape">Orizzontale</string>
  <string name="orientation_reverse_landscape">Orizzontale invertito</string>
  <string name="orientation_free">Rotazione libera</string>
@@ -90,7 +90,7 @@
  <string name="glucose">Glucosio</string>
  <string name="sensorviabluetooth">Sensore via bluetooth</string>
  <string name="sensorviabluetoothon">Per gli allarmi nei dispositivi non-Mirror, \'Sensore via bluetooth\' deve essere attivo</string>
- <string name="setunitfirst">Imposta prima l\'unità</string>
+ <string name="setunitfirst">Imposta prima l\'unitÃ </string>
  <string name="numberlabels">Etichette numeriche</string>
  <string name="colors">Colori</string>
  <string name="remindersname">Promemoria</string>
@@ -116,7 +116,7 @@
  <string name="glucose_value">Valore del glucosio</string>
  <string name="info">Info</string>
  <string name="devicespecific">Imposta valori specifici del dispositivo</string>
- <string name="dozeupdate">Aggiorna in modalità doze</string>
+ <string name="dozeupdate">Aggiorna in modalitÃ  doze</string>
  <string name="refresh">Aggiorna</string>
  <string name="sendqueue">Coda di invio</string>
  <string name="reinit">Reinit</string>
@@ -131,14 +131,14 @@
  <string name="carbo">Carboidrati</string>
  <string name="total">Totale: </string>
  <string name="mealtotal">Totale pasto: </string>
- <string name="quantity">Quantità</string>
+ <string name="quantity">QuantitÃ </string>
  <string name="per">" per "</string>
  <string name="specifyingredient">Devi specificare l\'ingrediente</string>
  <string name="specifyhowmuch">Devi specificare quanto</string>
  <string name="define">Definisci</string>
  <string name="edit">Modifica</string>
  <string name="name">Nome:</string>
- <string name="carbperunit">Carboidrati/unità:</string>
+ <string name="carbperunit">Carboidrati/unitÃ :</string>
  <string name="database">Database</string>
  <string name="search">Cerca</string>
  <string name="trace">Traccia</string>
@@ -197,7 +197,7 @@
     <string name="blueormirror">"Sensore via Bluetooth" deve essere attivo o questo deve essere configurato come mirror</string>
     <string name="vibrationname">Vibra</string>
     <string name="high_priority">Turbo</string>
-    <string name="darkmode">Modalità scura</string>
+    <string name="darkmode">ModalitÃ  scura</string>
     <string name="multiply">Moltiplica per:</string>
     <string name="rapidinsulin">Insulina rapida</string>
  <string name="longinsulin">Insulina lenta</string>
@@ -207,7 +207,7 @@
  <string name="resendquestion">Reinviare i dati?</string>
  <string name="resendmessage">Attenzione a non inviare dati sovrapposti a Libreview.</string>
  <string name="getaccountidquestion">Recuperare l\'Account ID da Libreview?</string>
- <string name="getaccountidmessage">L\'Account ID è necessario per usare con Juggluco i sensori Libre3 attivati con l\'app Libre3 di Abbott che usano questo account Libreview.</string>
+ <string name="getaccountidmessage">L\'Account ID Ã¨ necessario per usare con Juggluco i sensori Libre3 attivati con l\'app Libre3 di Abbott che usano questo account Libreview.</string>
  <string name="deleteconnection">Cancellare la connessione?</string>
  <string name="wakelock">Wakelock</string>
  <string name="wifi">Wifi</string>
@@ -243,7 +243,7 @@
  <string name="emailaddresstooshort">Indirizzo E-Mail troppo corto </string>
  <string name="emailaddresstoolong">Indirizzo E-Mail troppo lungo </string>
  <string name="password8">La password deve essere lunga almeno 8 caratteri </string>
- <string name="password36">La lunghezza massima della password è 36 caratteri </string>
+ <string name="password36">La lunghezza massima della password Ã¨ 36 caratteri </string>
  <string name="fromlibreview">Da Libreview</string>
  <string name="manual">Manualmente</string>
 <string name="noaccountidspecified">"Nessun account id specificato "</string>
@@ -264,7 +264,7 @@
 <string name="webserver">Web server</string>
 <string name="treatments">Inserisci valori</string>
 <string name="android13">Android</string>
-    <string name="wentwrong">Qualcosa è andato storto</string>
+    <string name="wentwrong">Qualcosa Ã¨ andato storto</string>
     <string name="dosis">" dose "</string>
     <string name="doses">" dosi "</string>
  <string name="penfailed">Lettura della penna di insulina fallita. Riprova.</string>
@@ -273,13 +273,13 @@
     <string name="dosesprior">Aggiungi solo dosi successive a:</string>
     <string name="modify">Modifica</string>
     <string name="notsynced">Non sincronizzato</string>
- <string name="lossdata">Ripristinare i valori predefiniti può causare la perdita di dati.</string>
+ <string name="lossdata">Ripristinare i valori predefiniti puÃ² causare la perdita di dati.</string>
  <string name="defaults">Predefiniti</string>
     <string name="notify">Notifica</string>
  <string name="separate">Separato</string>
     <string name="librecurrent">Immediato</string>
-    <string name="USE_ALARM">Allarme è allarme</string>
-    <string name="speed">Velocità</string>
+    <string name="USE_ALARM">Allarme Ã¨ allarme</string>
+    <string name="speed">VelocitÃ </string>
  <string name="pitch">Tono</string>
  <string name="talker">Voce</string>
  <string name="secondsbetween">Secondi tra</string>
@@ -314,15 +314,15 @@
  <string name="no_ringtone_picker_found">Nessun selettore di suoneria trovato</string>
  <string name="can_t_play">"Impossibile riprodurre "</string>
  <string name="seconds">" secondi"</string>
- <string name="duration_can_t_be_negative">"La durata non può essere negativa: "</string>
+ <string name="duration_can_t_be_negative">"La durata non puÃ² essere negativa: "</string>
  <string name="too_large_maximum_65535">" troppo grande, massimo=65535, "</string>
  <string name="too_large">" troppo grande"</string>
  <string name="can_t_use_specification">Impossibile usare la specifica</string>
  <string name="turn_on_nearby_devices_permission">Attiva il permesso DISPOSITIVI VICINI</string>
     <string name="enable_bluetooth">Abilita Bluetooth</string>
  <string name="turn_on_location_permission">Attiva il permesso di posizione</string>
- <string name="bluetooth_is_turned_off">Il Bluetooth è disattivato</string>
- <string name="allsentnoreceive">Quando tutto è inviato a un host, \"Ricevi da\" deve essere disattivato.</string>
+ <string name="bluetooth_is_turned_off">Il Bluetooth Ã¨ disattivato</string>
+ <string name="allsentnoreceive">Quando tutto Ã¨ inviato a un host, \"Ricevi da\" deve essere disattivato.</string>
  <string name="nomirrorport">Il numero di porta deve essere diverso dalla porta del mirror</string>
  <string name="nohttpport">Il numero di porta deve essere diverso dalla porta http</string>
 <string name="ready_in">" pronto tra "</string>
@@ -330,7 +330,7 @@
 <string name="endstime">" termina a quest\'ora"</string>
 <string name="triednothing">Niente provato</string>
 <string name="success">Successo</string>
-<string name="resendwarning">Tutti i dati saranno reinviati: questo richiede tempo e può avere conseguenze su Libreview e Kerfstok</string>
+<string name="resendwarning">Tutti i dati saranno reinviati: questo richiede tempo e puÃ² avere conseguenze su Libreview e Kerfstok</string>
 <string name="parseip">Errore nell\'analisi dell\'IP</string>
 <string name="toomanyhosts">Numero massimo di host superato</string>
 <string name="senthosts">Juggluco invia a un massimo di 6 host</string>
@@ -366,14 +366,14 @@
 
    <string name="text">Testo</string>
    <string name="arrow">Freccia</string>
-   <string name="notalldata">ATTENZIONE: “Ricevi da” non impostato, ma alcuni tipi di dato non vengono inviati.</string>
+   <string name="notalldata">ATTENZIONE: â€œRicevi daâ€ non impostato, ma alcuni tipi di dato non vengono inviati.</string>
   <string name="libresetalllabels">Specifica prima per ogni etichetta cosa farne.</string>
    <string name="photo">Foto</string>
    <string name="photomessage">Scansiona la data matrix di un sensore Dexcom G7/ONE+ o Sibionics GS1 oppure il QR code del mirror.</string>
    <string name="exchanges">Scambio dati</string>
    <string name="dexfuture">Predizione (Dexcom)</string>
    <string name="initializing">Inizializzazione</string>
-   <string name="startjuggluco">Juggluco è in esecuzione sul telefono?\n\nWIFI e Bluetooth sono abilitati?</string>
+   <string name="startjuggluco">Juggluco Ã¨ in esecuzione sul telefono?\n\nWIFI e Bluetooth sono abilitati?</string>
    <string name="connected">Connesso!</string>
    <string name="useclose">Pulsante chiudi</string>
    <string name="alarmclock">\u23F0</string>
@@ -419,9 +419,9 @@
  <string name="nothing"></string>
  <string name="scantranstitle">Scansiona la data matrix del TRASMETTITORE</string>
  <string name="scantransmessage">Data matrix del sensore Sibionics 2 scansionata correttamente. \nScansiona ora la data matrix del trasmettitore.</string>
- <string name="mirrorscansucces">Connessione aggiunta correttamente al menu sinistro centrale→Mirror.</string>
+ <string name="mirrorscansucces">Connessione aggiunta correttamente al menu sinistro centraleâ†’Mirror.</string>
  <string name="resettitle">Reset</string>
- <string name="resetmessage">Cancella la memoria del trasmettitore. Va premuto prima di usare un nuovo sensore in un trasmettitore già usato.</string>
+ <string name="resetmessage">Cancella la memoria del trasmettitore. Va premuto prima di usare un nuovo sensore in un trasmettitore giÃ  usato.</string>
  <string name="nolibrelink">Usa il Broadcast EverSense al suo posto. Vedi l\'aiuto.</string>
  <string name="calibration">Calibrazione</string>
  <string name="exclude">Escludi</string>
@@ -461,8 +461,7 @@
 <string name="username">Nome utente</string>
 <string name="turnserver">Turn Server</string>
  <string name="ICElabeltooshort">ERRORE: l\'etichetta ICE deve essere lunga almeno 16 byte.</string>
- <string name="attr_ble_scan">Scansione del sensore di glucosio Bluetooth</string>
-    <string name="divorcename">Disaccoppia</string>
+ <string name="divorcename">Disaccoppia</string>
     <string name="divorcemessage">Permettere al sensore di connettersi a un altro telefono o orologio (invece di questo)?</string>
     <string name="unpairsuccess">" Disaccoppiamento riuscito"</string>
     <string name="unpairfailed">" Disaccoppiamento fallito"</string>
@@ -476,7 +475,7 @@
     <string name="failed">fallito</string>
     <string name="successful">riuscito</string>
     <string name="use">Attiva</string>
-    <string name="connecttosensor">Connessione al sensore…</string>
+    <string name="connecttosensor">Connessione al sensoreâ€¦</string>
     <string name="clear">Cancella</string>
     <string name="clearingmemory">Cancellazione memoria sensore</string>
     <string name="clearmessage">Riavviare il sensore? Cancellare la memoria del sensore?</string>
@@ -494,8 +493,8 @@
      <string name="wrongcode">QR code errato</string>
      <string name="leave">Uscire?</string>
      <string name="id0message">L\'ID deve essere diverso da 0</string>
-     <string name="emailnotused">La combinazione email-password non viene usata e non sarà salvata.</string>
-    <string name="connecttoserver">Connessione al server…</string>
+     <string name="emailnotused">La combinazione email-password non viene usata e non sarÃ  salvata.</string>
+    <string name="connecttoserver">Connessione al serverâ€¦</string>
     <string name="retrievefailed">Recupero account id fallito</string>
     <string name="lockscreen_wallpaper">Sfondo schermata di blocco</string>
     <string name="alarm_lockscreen">Allarme su schermata di blocco</string>

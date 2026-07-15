@@ -113,6 +113,29 @@ static public final boolean includeLib= true;
 static public final boolean isRelease= BuildConfig.isRelease==1;
 //static public final boolean isRelease= !BuildConfig.DEBUG;
 
+/**
+ * Runtime UI switcher — persisted in SharedPreferences so the user can flip
+ * between the Vico/Compose chart and the legacy OpenGL/NanoVG chart from the
+ * Settings screen without a rebuild.
+ *
+ * Default: true (Vico). Toggling via Settings calls activity.recreate() so
+ * startdisplay() picks up the new value immediately.
+ */
+private static final String PREF_FILE   = "juggluco_ui";
+private static final String PREF_VICO   = "use_vico_chart";
+
+public static boolean useVicoChart() {
+    if (app == null) return true; // safe default before Application.onCreate()
+    return app.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE)
+              .getBoolean(PREF_VICO, true);
+}
+
+public static void setUseVicoChart(boolean value) {
+    if (app == null) return;
+    app.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE)
+       .edit().putBoolean(PREF_VICO, value).apply();
+}
+
 static final String JUGGLUCOIDENT=isWearable?"juggluco":"jugglucowatch";
 public static final Locale usedlocale=US;
 static boolean setremoveviews=false;
@@ -654,12 +677,11 @@ public static    int stopprogram=0;
     @Override
     public void onCreate() {
         super.onCreate();
-
     supportsRtl = (getContext().getApplicationInfo().flags & ApplicationInfo.FLAG_SUPPORTS_RTL) != 0;
     if(DiskSpace.check(this)) {
         initproc();
         }
-    else {    
+    else {
         android.util.Log.e(LOG_ID,"Stop program");
         stopprogram=1;
         }

@@ -1306,7 +1306,7 @@ touched of the alarm notification in Juggluco;</p>
 <p style="line-height: 100%; margin-bottom: 0cm">- The <i>Floating
 Glucose</i> is touched.</p>
 <h3 class="western">Value available:</h3>
-<p style="margin-bottom: 0cm; line-height: 100%">Sometimes the sensor
+<p style="line-height: 100%; margin-bottom: 0cm">Sometimes the sensor
 stops working temporarily. With this option on, you\'ll be notified
 when it works again — but only if you have actually opened Juggluco
 and seen the missing value yourself. If you only noticed the gap from
@@ -1315,15 +1315,21 @@ notification will not be triggered.</p>
 <p style="line-height: 100%; margin-bottom: 0cm">For each alarm you
 can specify which <a href="https://www.juggluco.nl/Jugglucohelp/ringtone.html">Ringtone</a>
 to play and for how long.</p>
-<h3 class="western">Alarm is alarm:</h3>
+<h3 class="western">Alarm is alarm/notification/media:</h3>
 <p>When “alarm is alarm” is checked, the <a href="https://www.juggluco.nl/Jugglucohelp/ringtone.html">Ringtone</a>
-played for low, high and loss of signal alarms is given <i>Alarms</i>
+played for low, high and loss of signal alarms is given the <i>Alarm</i>
 sound category. This means that in Android settings its volume is
-managed with the Alarms slider, and it isn\'t silenced when the phone
-is muted or set to vibrate. When <i>Alarm is alarm</i> is not
-checked, the notification-volume slider is used on phones, and the
-system-volume slider on Samsung Galaxy Watch 4 to 7. This is always
-the case for the value available notification.</p>
+managed with the Alarm slider, and it isn\'t silenced when the phone
+is muted or set to vibrate. When <i>Notification</i> is checked, the
+notification-volume slider is used on phones, and the system-volume
+slider on Samsung Galaxy Watch 4 to 7. This is always the case for
+the value available notification. When <i>Media</i> is checked the
+media-volume slider is used. On most phone <i>media</i> is audible
+during “do not disturb”, but when a headphone or earbuds are
+attached to the phone, the alarm sound is redirected through the
+headphone. The Alarm category is audible through both headphone and
+normal speaker. Notification is not audible at all during “<i>do
+not disturb</i>”.</p>
 <h3 class="western">Default:</h3>
 <p>Specify for which <b>profile</b> these settings are. This way you
 can change between settings for alarms and talk. You can specify a
@@ -3035,14 +3041,22 @@ all values.</p>
 <![CDATA[
 <p><a href="https://www.juggluco.nl/Jugglucohelp/index.html">index</a></p><p><a href="https://www.juggluco.nl/Jugglucohelp/ar/GlucoseMeter.html">ar</a>&emsp;&emsp;<a href="https://www.juggluco.nl/Jugglucohelp/de/GlucoseMeter.html">de</a>&emsp;&emsp;<a href="https://www.juggluco.nl/Jugglucohelp/es/GlucoseMeter.html">es</a>&emsp;&emsp;<a href="https://www.juggluco.nl/Jugglucohelp/hi/GlucoseMeter.html">hi</a>&emsp;&emsp;<a href="https://www.juggluco.nl/Jugglucohelp/it/GlucoseMeter.html">it</a>&emsp;&emsp;<a href="https://www.juggluco.nl/Jugglucohelp/ja/GlucoseMeter.html">ja</a>&emsp;&emsp;<a href="https://www.juggluco.nl/Jugglucohelp/nl/GlucoseMeter.html">nl</a>&emsp;&emsp;<a href="https://www.juggluco.nl/Jugglucohelp/ru/GlucoseMeter.html">ru</a>&emsp;&emsp;<a href="https://www.juggluco.nl/Jugglucohelp/uz/GlucoseMeter.html">uz</a>&emsp;&emsp;<a href="https://www.juggluco.nl/Jugglucohelp/GlucoseMeter.html?lang=en">en</a>&emsp;&emsp;</p><h1 class="western">Glucose meter</h1>
 <p style="line-height: 100%; margin-bottom: 0cm">Juggluco will only
-add glucose values with a timestamp later than the specified date and
-time. Change to a later date and time if earlier glucose values are
-already present in Juggluco.</p>
+add glucose values with a timestamp later than the specified <b>date</b>
+and <b>time</b>. Change to a later date and time if earlier glucose
+values are already present in Juggluco.</p>
 <p style="line-height: 100%; margin-bottom: 0cm">Select the label for
-blood glucose.</p>
-<p style="line-height: 100%; margin-bottom: 0cm">The first time, you need to put the glucose meter into PAIRING mode — for example, by long-pressing the button on the powered-off meter until a blue light blinks.</p>
-<p><br></p>
-<p><br></p>
+<b>blood glucose</b>.</p>
+<p style="line-height: 100%; margin-bottom: 0cm">The first time, you
+need to put the glucose meter into PAIRING mode — for example, by
+long-pressing the button on the powered-off meter until a blue light
+blinks.</p>
+<p><b>Delete</b>: Removes knowledge of this glucose meter from
+Juggluco so that it is no longer shown in the glucose meter list. The
+data received from the glucose meter will remain.</p>
+<p><br/>
+<br/>
+
+</p>
 ]]>
 </string>
 <string name="GlucoseMeterList" >

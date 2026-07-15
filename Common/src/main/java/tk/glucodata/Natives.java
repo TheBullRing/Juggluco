@@ -922,7 +922,11 @@ public static native byte[] careSenseTimeCMD();
 
 public static native int GlucoseMeterGetLastPos(int meterIndex);
 public static native boolean GlucoseMeterSetLastPos(int meterIndex,int newpos);
-public static native int GlucoseMeterGetIndex(String deviceName);
+public static native int GlucoseMeterGetIndex(String deviceName,String address);
+
+public static native boolean GlucoseMeterRemove(String deviceName,String address);
+
+public static native boolean GlucoseMeterRemoveIndex(int index);
 
 public static native boolean GlucoseMeterSave(int meterIndex,byte[] value);
 public static native boolean GlucoseMeterProcessContext(int meterIndex,byte[] value);
@@ -948,7 +952,7 @@ public static native boolean GlucoseMeterSetActive(int meterIndex,boolean active
 public static native boolean GlucoseMeterGetActive(int meterIndex);
 public static native int GlucoseMeterCount();
 
-public static native int GlucoseMeterHasIndex(String deviceName);
+public static native int GlucoseMeterHasIndex(String deviceName,String address);
 
 public static native void setDisconnectSensor(boolean val);
 public static native boolean getDisconnectSensor( );
@@ -1003,7 +1007,6 @@ public static native byte[] gs3Glucose(long dataptr, byte[] value,long mmsec,lon
 public static native int getmaxmgdL(int sensorgen);
 public static native int getminmgdL(int sensorgen);
 public static native int getSerialLength(long dataptr);
-public static native boolean GlucoseMeterRemove(String deviceName);
 public static native boolean hasHistory(long sensorptr);
 
 public static native boolean hasAidexX();
@@ -1049,6 +1052,8 @@ public static native boolean getisOval( );
 public static native void setradius(int val);
 public static native int getradius( );
 //s/^[	 ]*extern.*JNIEXPORT[         ]*\([a-zA-Z]*\)[ ]*JNICALL[      ]*fromjava(\([^)]*\)) *(JNIEnv[^,]*,[^,)]*[,)]\([^){]*\)[^a-zA-Z0-9]*$/public static native \1 \2(\3);/g
+
+public static native void isChinese(long dataptr);
 
 public static native void testLibre3( );
 }

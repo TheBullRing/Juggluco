@@ -412,6 +412,12 @@ void finish() {
         }
         }
     activity.requestRender();
+    // In the Vico path requestRender() is a no-op; push a data refresh so that
+    // any settings changes (unit, thresholds, dark-mode, etc.) are applied
+    // to the chart immediately without waiting for the next heartbeat tick.
+    if(tk.glucodata.Applic.useVicoChart()) {
+        tk.glucodata.chart.NativeGraphDataRepository.notifyDataChanged();
+        }
     }
 
 //    Button deletelabel;
@@ -1605,6 +1611,55 @@ private    void mksettings(MainActivity context) {
                 }
         floatconfig.setOnClickListener(v-> tk.glucodata.FloatingConfig.show(context,thelayout[0]));
 
+        // ── Screen rotation spinner ───────────────────────────────────────────
+        // Values mirror ActivityInfo.SCREEN_ORIENTATION_* constants.
+        // The JNI sentinel 127 is mapped to/from -1 (UNSPECIFIED) by javasettings.cpp.
+        final int[] orientationValues  = {-1, 0, 8};
+        final int[] orientationLabels  = {R.string.orientation_free,
+                                          R.string.orientation_landscape,
+                                          R.string.orientation_reverse_landscape};
+        final int currentOrientation   = Natives.getScreenOrientation();
+        int orientInitPos = 0; // default: free rotation
+        for (int i = 0; i < orientationValues.length; i++) {
+            if (orientationValues[i] == currentOrientation) { orientInitPos = i; break; }
+        }
+        final int orientInitPosFinal = orientInitPos;
+        var orientSpin = getGenSpin(context);
+        var orientLabels = new java.util.ArrayList<String>();
+        for (int lbl : orientationLabels) orientLabels.add(context.getString(lbl));
+        var orientAdapt = new LabelAdapter<String>(context, orientLabels, 0);
+        orientSpin.setAdapter(orientAdapt);
+        orientSpin.setSelection(orientInitPosFinal);
+        orientSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int val = orientationValues[position];
+                Natives.setScreenOrientation(val);
+                context.setRequestedOrientation(val);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+        var orientLabel = getlabel(context, R.string.screen_rotation);
+        // Orientation control only applies to Vico UI — old UI is always landscape.
+        if (!tk.glucodata.Applic.useVicoChart()) {
+            orientLabel.setVisibility(GONE);
+            orientSpin.setVisibility(GONE);
+        }
+
+        // ── Chart UI toggle: Vico (new) vs OpenGL/NanoVG (legacy) ─────────────
+        var vicoToggle = getcheckbox(context, R.string.use_vico_chart,
+                tk.glucodata.Applic.useVicoChart());
+        vicoToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            tk.glucodata.Applic.setUseVicoChart(isChecked);
+            // Dismiss Settings cleanly before recreating the Activity.
+            // If we call recreate() while the settings overlay is still attached,
+            // the old settinglayout stays in the destroyed window and the new
+            // onCreate's startdisplay() conflicts with it → crash / window leak.
+            closeview();
+            context.recreate();
+        });
+
         // ── Dev enhancements: Lock Screen Wallpaper + Alarm Lock Screen ───────
         CheckDirectionBox lockscreenWp = new CheckDirectionBox(context);
         lockscreenWp.setText(R.string.lockscreen_wallpaper);
@@ -1653,6 +1708,8 @@ private    void mksettings(MainActivity context) {
                 hasnfc?new View[]{nfcsound, globalscan}:null,
                 hasnfc&&camera!=null?new View[]{camera}:null,
                 new View[]{floatconfig},
+                new View[]{orientLabel, orientSpin},
+                new View[]{vicoToggle},
                 new View[]{calibration},
                 new View[]{glucosenotify},
                 new View[]{lockscreenWp},
@@ -1669,7 +1726,7 @@ private    void mksettings(MainActivity context) {
                 new View[]{displayview},
                 row9
         };
-        final Object[][] landscapeViews=new Object[][]{row0, hasnfc?new View[]{nfcsound, globalscan,camera}:null,rowglu,rowDevEnhancements,rowDevEnhancements2,new View[]{exchanges,numalarm,alarmbut},numdis, row9};
+        final Object[][] landscapeViews=new Object[][]{row0, hasnfc?new View[]{nfcsound, globalscan,camera}:null,new View[]{orientLabel,orientSpin},new View[]{vicoToggle},rowglu,rowDevEnhancements,rowDevEnhancements2,new View[]{exchanges,numalarm,alarmbut},numdis, row9};
         portraitRowsHolder[0]=portraitViews;
         landscapeRowsHolder[0]=landscapeViews;
         views=Layout.portraitRows(portraitViews,landscapeViews);

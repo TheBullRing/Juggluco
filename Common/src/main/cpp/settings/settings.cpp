@@ -549,7 +549,7 @@ static void initinjuggluco(std::string_view dirfiles,const char *country) {
         startsensors( );
         extern void startthreads() ;
         startthreads();
-    settings->data()->initVersion=38;
+    settings->data()->initVersion=39;
         }
 
 void initjuggluco(std::string_view dirfiles) {

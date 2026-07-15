@@ -1,4 +1,8 @@
 
+// MIGRATION-FREEZE: This file is part of the C++/OpenGL/NanoVG rendering stack
+// that is being replaced by Vico/Compose (Option B). Do NOT modify this file
+// during the migration. See IMPLEMENTATION_PLAN.md and docs/jni_inventory.md.
+
 //#define DONTTALK WEAROS
 
 #ifdef WEAROS

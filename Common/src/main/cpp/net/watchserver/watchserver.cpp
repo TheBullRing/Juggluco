@@ -459,8 +459,10 @@ static bool mkhtml(recdata *outdata,std::string_view origin,std::string_view hea
     addar(endptr,htmlend);
     outdata->start=start;
     outdata->len=endptr-start;
+    #ifndef NOLOG
     LOGGER("mkhtml predict=%d pagelen=%d totlen=%d reallen=%d\n",weblen,endptr-startpage,totlen,outdata->len);
     assert((endptr-startpage)==weblen);
+    #endif
     return true;
 }
 void mktypeheader(char *outstart,char *outiter,const bool headonly,recdata *outdata,std::string_view type,std::string_view origin) ;

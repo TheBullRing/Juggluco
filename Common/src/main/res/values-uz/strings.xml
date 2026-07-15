@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <string name="language">uz</string>
     <string name="languagename">Til</string>
     <string name="app_name">Juggluco</string>
@@ -204,7 +204,7 @@
     <string name="getaccountidmessage">Ushbu Libreview hisobida Abbott Libre3 ilovasi bilan faollashtirilgan Libre3 sensorlaridan foydalanish uchun Account ID kerak.</string>
     <string name="deleteconnection">Ulanish o\'chirilsinmi?</string>
     <string name="wakelock">Wakelock</string>
-    <string name="wifi">Wi‑Fi</string>
+    <string name="wifi">Wiâ€‘Fi</string>
     <string name="heartrate">Yurak urishi</string>
     <string name="xdripbroadcast">xDrip uzatishi</string>
     <string name="sensorpermission">Sensorlar ruxsati</string>
@@ -350,7 +350,7 @@
     <string name="glucoseshortcomplicationlabel">Kichik qiymat + strelka</string>
     <string name="text">Matn</string>
     <string name="arrow">Strelka</string>
-    <string name="notalldata">OGOHLANTIRISH: “Receive from” o\'rnatilmagan, lekin ayrim ma\'lumot turlari yuborilmayapti.</string>
+    <string name="notalldata">OGOHLANTIRISH: â€œReceive fromâ€ o\'rnatilmagan, lekin ayrim ma\'lumot turlari yuborilmayapti.</string>
     <string name="libresetalllabels">Avval har bir yorliq uchun u bilan nima qilish kerakligini ko\'rsating.</string>
     <string name="photo">Foto</string>
     <string name="photomessage">Dexcom G7/ONE+ yoki Sibionics GS1 sensori data matrixini yoki mirror QR kodini skanerlang.</string>
@@ -362,7 +362,7 @@
 WIFI va Bluetooth yoqilganmi?</string>
     <string name="connected">Ulandi!</string>
     <string name="useclose">Yopish tugmasi</string>
-    <string name="alarmclock">⏰</string>
+    <string name="alarmclock">â°</string>
     <string name="filesize">Fayl hajmi</string>
     <string name="logging">Jurnal</string>
     <string name="aspart">Insulin Aspart/NovoRapid/NovoLog</string>
@@ -400,7 +400,7 @@ WIFI va Bluetooth yoqilganmi?</string>
     <string name="scantranstitle">TRANSMITTER data matrixini skanerlang</string>
     <string name="scantransmessage">Sibionics 2 sensori data matrixi muvaffaqiyatli skanerlandi. 
 Endi transmitter data matrixini skanerlang."</string>
-    <string name="mirrorscansucces">Ulanish chap o\'rta menyu→Mirror ga muvaffaqiyatli qo\'shildi.</string>
+    <string name="mirrorscansucces">Ulanish chap o\'rta menyuâ†’Mirror ga muvaffaqiyatli qo\'shildi.</string>
     <string name="resettitle">Qayta o\'rnatish</string>
     <string name="resetmessage">Transmitter xotirasini tozalaydi. Oldin ishlatilgan transmitterda yangi sensordan foydalanishdan avval bosilishi kerak.</string>
     <string name="nolibrelink">Buning o\'rniga EverSense Broadcast dan foydalaning. Yordamni ko\'ring.</string>
@@ -442,7 +442,6 @@ Endi transmitter data matrixini skanerlang."</string>
     <string name="username">Foydalanuvchi nomi</string>
     <string name="turnserver">TURN server</string>
     <string name="ICElabeltooshort">XATO: ICE yorlig\'i kamida 16 bayt bo\'lishi kerak</string>
-    <string name="attr_ble_scan">Bluetooth glyukoza sensorini skanerlash</string>
     <string name="divorcename">Juftlikni bekor qilish</string>
     <string name="divorcemessage">Sensor boshqa telefon yoki soatga ulanishiga ruxsat berilsinmi (buning o\'rniga bu qurilmaga emas)?</string>
     <string name="unpairsuccess">" Juftlikni bekor qilish muvaffaqiyatli"</string>
@@ -457,7 +456,7 @@ Endi transmitter data matrixini skanerlang."</string>
     <string name="failed">muvaffaqiyatsiz</string>
     <string name="successful">muvaffaqiyatli</string>
     <string name="use">Faollashtirish</string>
-    <string name="connecttosensor">Sensorga ulanmoqda…</string>
+    <string name="connecttosensor">Sensorga ulanmoqdaâ€¦</string>
     <string name="clear">Tozalash</string>
     <string name="clearingmemory">Sensor xotirasi tozalanmoqda</string>
     <string name="clearmessage">Sensor qayta ishga tushirilsinmi? Sensor xotirasi tozalansinmi?</string>
